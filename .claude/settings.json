@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -File \"D:\\claude\\vibeclaude\\AI vs Human\\.claude\\git-backup.ps1\"",
+            "shell": "powershell",
+            "timeout": 30,
+            "statusMessage": "Backing up to GitHub..."
+          }
+        ]
+      }
+    ]
+  }
+}
