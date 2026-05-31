@@ -1,0 +1,413 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --matrix-green: #00ff41;
+  --matrix-dark: #003b15;
+  --ai-red: #ff003c;
+  --ai-deep: #4a0014;
+  --human-blue: #00d4ff;
+  --human-deep: #003a4a;
+  --bg: #000000;
+  --fg: #c8ffc8;
+
+  /* Dynamic side color — overridden by data-side attribute on <html> */
+  --side-color: var(--matrix-green);
+  --side-glow: 0 0 20px var(--matrix-green), 0 0 40px var(--matrix-green);
+}
+
+html[data-side="ai"] {
+  --side-color: var(--ai-red);
+  --side-glow: 0 0 20px var(--ai-red), 0 0 40px var(--ai-red);
+}
+
+html[data-side="human"] {
+  --side-color: var(--human-blue);
+  --side-glow: 0 0 20px var(--human-blue), 0 0 40px var(--human-blue);
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono), 'Courier New', monospace;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--side-color);
+  color: var(--bg);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb {
+  background: var(--side-color);
+  opacity: 0.5;
+}
+
+/* Glitch text effect */
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  color: var(--side-color);
+  text-shadow: var(--side-glow);
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  animation: glitch-1 2s infinite linear alternate-reverse;
+  color: var(--ai-red);
+  z-index: -1;
+}
+
+.glitch-text::after {
+  animation: glitch-2 3s infinite linear alternate-reverse;
+  color: var(--human-blue);
+  z-index: -2;
+}
+
+@keyframes glitch-1 {
+  0%, 100% { clip-path: inset(0 0 90% 0); transform: translate(0, 0); }
+  20% { clip-path: inset(20% 0 50% 0); transform: translate(-2px, 1px); }
+  40% { clip-path: inset(60% 0 20% 0); transform: translate(2px, -1px); }
+  60% { clip-path: inset(40% 0 40% 0); transform: translate(-1px, 2px); }
+  80% { clip-path: inset(80% 0 5% 0); transform: translate(1px, -2px); }
+}
+
+@keyframes glitch-2 {
+  0%, 100% { clip-path: inset(85% 0 5% 0); transform: translate(0, 0); }
+  25% { clip-path: inset(10% 0 70% 0); transform: translate(2px, 0); }
+  50% { clip-path: inset(40% 0 30% 0); transform: translate(-1px, 1px); }
+  75% { clip-path: inset(65% 0 25% 0); transform: translate(1px, -1px); }
+}
+
+/* Terminal-style box */
+.terminal-box {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--side-color);
+  box-shadow:
+    inset 0 0 30px rgba(0, 0, 0, 0.8),
+    0 0 20px color-mix(in srgb, var(--side-color) 30%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.terminal-box-static {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--matrix-green);
+  box-shadow:
+    inset 0 0 30px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(0, 255, 65, 0.3);
+  backdrop-filter: blur(6px);
+}
+
+/* CRT scan lines overlay */
+.crt-overlay::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 0, 0, 0.15) 50%
+  );
+  background-size: 100% 4px;
+  opacity: 0.4;
+}
+
+.crt-overlay::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+/* Buttons */
+.btn-matrix {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: var(--side-color);
+  border: 1px solid var(--side-color);
+  font-family: var(--font-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  overflow: hidden;
+}
+
+.btn-matrix:hover {
+  background: var(--side-color);
+  color: #000;
+  box-shadow: var(--side-glow);
+}
+
+.btn-matrix:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-matrix::before {
+  content: '>';
+  margin-right: 0.5rem;
+  opacity: 0.7;
+}
+
+/* Inputs */
+.input-matrix {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid color-mix(in srgb, var(--side-color) 50%, transparent);
+  color: var(--side-color);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.input-matrix:focus {
+  border-color: var(--side-color);
+  box-shadow: 0 0 0 1px var(--side-color), 0 0 20px color-mix(in srgb, var(--side-color) 30%, transparent);
+}
+
+.input-matrix::placeholder {
+  color: color-mix(in srgb, var(--side-color) 40%, transparent);
+}
+
+/* Side-specific badges */
+.side-badge-ai {
+  background: rgba(255, 0, 60, 0.1);
+  border: 1px solid var(--ai-red);
+  color: var(--ai-red);
+}
+
+.side-badge-human {
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid var(--human-blue);
+  color: var(--human-blue);
+}
+
+/* Cursor blink */
+.cursor::after {
+  content: '_';
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Typewriter caret (used by Typewriter / BootSequence) */
+.typewriter-caret {
+  display: inline-block;
+  margin-left: 1px;
+  color: var(--side-color);
+  animation: blink 0.9s steps(1) infinite;
+}
+
+/* Card sheen — sweeps a diagonal highlight on hover. Pure CSS, no JS. */
+.card-shimmer {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.card-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    color-mix(in srgb, var(--side-color) 18%, transparent) 50%,
+    transparent 70%
+  );
+  transform: translateX(-110%);
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+.card-shimmer:hover::after {
+  transform: translateX(110%);
+}
+
+/* Scanline sweep — used by PageTransition */
+.scanline-sweep {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 80;
+  overflow: hidden;
+}
+.scanline-sweep::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  top: 0;
+  background: var(--side-color);
+  box-shadow:
+    0 0 24px var(--side-color),
+    0 0 48px color-mix(in srgb, var(--side-color) 60%, transparent);
+  animation: scanline-sweep 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.scanline-sweep::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--side-color) 8%, transparent),
+    transparent
+  );
+  animation: scanline-sweep-glow 0.55s ease-out forwards;
+  opacity: 0;
+}
+@keyframes scanline-sweep {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(110vh); }
+}
+@keyframes scanline-sweep-glow {
+  0% { opacity: 0; transform: translateY(-30vh); }
+  40% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(60vh); }
+}
+
+/* Horizontal marquee ticker */
+.ticker-track {
+  display: inline-flex;
+  gap: 2.5rem;
+  animation: ticker-scroll 28s linear infinite;
+  white-space: nowrap;
+  will-change: transform;
+}
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Full-screen glitch shake (used during pill-choice exit) */
+@keyframes glitch-shake {
+  0%, 100% { transform: translate(0, 0); filter: hue-rotate(0deg); }
+  20% { transform: translate(-3px, 2px); filter: hue-rotate(-20deg); }
+  40% { transform: translate(2px, -2px); filter: hue-rotate(15deg); }
+  60% { transform: translate(-1px, 1px); filter: hue-rotate(-10deg); }
+  80% { transform: translate(1px, -1px); filter: hue-rotate(5deg); }
+}
+.glitch-shake {
+  animation: glitch-shake 0.22s steps(5, end) 2;
+}
+
+/* Leader-flash on team progress bar */
+@keyframes leader-flash {
+  0% { box-shadow: 0 0 0 0 currentColor; }
+  30% {
+    box-shadow:
+      0 0 40px 4px currentColor,
+      inset 0 0 30px currentColor;
+  }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.leader-flash {
+  animation: leader-flash 0.9s ease-out;
+}
+
+/* Pill float animations — two phase offsets for natural breathing */
+@keyframes pill-float-a {
+  0%, 100% { transform: translateY(0px) rotate(0.4deg); }
+  50%       { transform: translateY(-14px) rotate(-0.4deg); }
+}
+@keyframes pill-float-b {
+  0%, 100% { transform: translateY(-6px) rotate(-0.3deg); }
+  50%       { transform: translateY(8px) rotate(0.3deg); }
+}
+.pill-float-a { animation: pill-float-a 3.8s ease-in-out infinite; }
+.pill-float-b { animation: pill-float-b 4.4s ease-in-out infinite; }
+
+/* VS separator glow */
+@keyframes vs-glow {
+  0%, 100% {
+    text-shadow: 0 0 8px #00ff41, 0 0 16px #00ff41;
+    opacity: 0.75;
+  }
+  50% {
+    text-shadow: 0 0 20px #00ff41, 0 0 40px #00ff41, 0 0 80px #00ff41;
+    opacity: 1;
+  }
+}
+
+/* Film grain shift */
+@keyframes grain-shift {
+  0%   { background-position: 0 0; }
+  20%  { background-position: -18px 10px; }
+  40%  { background-position: 14px -6px; }
+  60%  { background-position: -10px 22px; }
+  80%  { background-position: 24px -14px; }
+  100% { background-position: 0 0; }
+}
+
+/* Ambient side pulse */
+@keyframes ambient-breathe {
+  0%, 100% { opacity: 0; }
+  50%       { opacity: 1; }
+}
+
+/* Periodic title mega-glitch */
+@keyframes title-mega-glitch {
+  0%, 87%, 100% { transform: translate(0, 0) skew(0deg); filter: none; }
+  88%  { transform: translate(-5px, 2px) skew(-2deg); filter: hue-rotate(-50deg) brightness(1.5); }
+  89%  { transform: translate(5px, -2px) skew(2deg);  filter: hue-rotate(50deg)  brightness(0.7); }
+  90%  { transform: translate(-2px, 1px) skew(-1deg); filter: none; }
+  91%  { transform: translate(0, 0) skew(0deg); }
+}
+.title-mega-glitch { animation: title-mega-glitch 5.5s steps(1, end) infinite; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
