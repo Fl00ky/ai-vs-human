@@ -36,28 +36,31 @@ export function LivePulse() {
   const humanPct = 100 - aiPct;
 
   return (
-    <div className="flex flex-col items-center gap-3">
-      <div className="text-[9px] sm:text-[10px] uppercase tracking-[0.5em] text-fg/30 font-mono">
+    <div className="flex flex-col items-center gap-3 px-5 py-4 rounded-xl bg-black/55 backdrop-blur-sm border border-matrix-green/25">
+      <div
+        className="text-[10px] sm:text-[11px] uppercase tracking-[0.5em] text-matrix-green/70 font-mono font-bold"
+        style={{ textShadow: "0 0 8px rgba(0,255,65,0.6)" }}
+      >
         {t.landing.liveStatus}
       </div>
 
-      <motion.div key={pulseKey} initial={{ opacity: 0.5 }} animate={{ opacity: [0.5, 1, 0.7] }} transition={{ duration: 1.0 }}
-        className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs font-mono uppercase tracking-[0.22em]"
+      <motion.div key={pulseKey} initial={{ opacity: 0.6 }} animate={{ opacity: [0.6, 1, 0.85] }} transition={{ duration: 1.0 }}
+        className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-mono uppercase tracking-[0.22em] font-bold"
       >
-        <span className="inline-flex items-center gap-1.5 text-fg/55">
-          <span className="w-1.5 h-1.5 rounded-full bg-matrix-green animate-pulse" />
-          <span className="text-matrix-green/80 tabular-nums">{agents.toLocaleString()}</span>
-          <span>{t.landing.agents}</span>
+        <span className="inline-flex items-center gap-1.5 text-white/90">
+          <span className="w-2 h-2 rounded-full bg-matrix-green animate-pulse" style={{ boxShadow: "0 0 8px #00ff41" }} />
+          <span className="text-matrix-green tabular-nums" style={{ textShadow: "0 0 8px #00ff41" }}>{agents.toLocaleString()}</span>
+          <span className="text-white/70">{t.landing.agents}</span>
         </span>
-        <span className="text-fg/20">·</span>
-        <span className="tabular-nums font-bold" style={{ color: "#ff003c" }}>{aiPct}% {t.common.ai}</span>
-        <span className="text-fg/20 normal-case tracking-normal text-[10px]">vs</span>
-        <span className="tabular-nums font-bold" style={{ color: "#00d4ff" }}>{humanPct}% {t.common.human}</span>
+        <span className="text-fg/30">·</span>
+        <span className="tabular-nums" style={{ color: "#ff3860", textShadow: "0 0 10px #ff003c" }}>{aiPct}% {t.common.ai}</span>
+        <span className="text-fg/40 normal-case tracking-normal text-[10px]">vs</span>
+        <span className="tabular-nums" style={{ color: "#3ce0ff", textShadow: "0 0 10px #00d4ff" }}>{humanPct}% {t.common.human}</span>
       </motion.div>
 
-      <div className="w-48 sm:w-64 h-1 rounded-full overflow-hidden bg-fg/10">
+      <div className="w-48 sm:w-64 h-1.5 rounded-full overflow-hidden bg-black/60 border border-fg/10">
         <motion.div className="h-full rounded-full"
-          style={{ background: `linear-gradient(90deg, #ff003c ${aiPct}%, #00d4ff ${aiPct}%)` }}
+          style={{ background: `linear-gradient(90deg, #ff003c ${aiPct}%, #00d4ff ${aiPct}%)`, boxShadow: "0 0 12px rgba(0,212,255,0.5)" }}
           animate={{ width: "100%" }} transition={{ duration: 0.8, ease: "easeOut" }}
         />
       </div>
