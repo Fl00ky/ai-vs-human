@@ -26,6 +26,12 @@ export default async function DashboardPage() {
     .select("id", { count: "exact", head: true })
     .eq("referred_by", user.id)
     .eq("referral_qualified", false);
+  const { data: topBrief } = await supabase
+    .from("daily_briefs")
+    .select("title, category")
+    .order("published_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
   const [recentScores, recentQuestsRaw, recentAchsRaw] = await Promise.all([
     supabase.from("game_scores").select("id, user_id, game, score, played_at").order("played_at", { ascending: false }).limit(15),
@@ -76,6 +82,7 @@ export default async function DashboardPage() {
       globalRank={(rankRow as { rank: number } | null)?.rank ?? null}
       distinctGames={distinctGames}
       pendingReferrals={pendingReferrals ?? 0}
+      topBrief={(topBrief as { title: string; category: string } | null) ?? null}
     />
   );
 }

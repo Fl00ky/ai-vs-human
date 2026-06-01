@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Gamepad2, ListTodo, Trophy, ArrowRight, type LucideIcon } from "lucide-react";
+import { Gamepad2, ListTodo, Trophy, ArrowRight, Newspaper, type LucideIcon } from "lucide-react";
 import { GlitchText } from "@/components/matrix/Terminal";
 import { LiveTeamProgress } from "@/components/leaderboard/LiveTeamProgress";
 import { ActivityFeed, type FeedEvent } from "@/components/ActivityFeed";
@@ -35,9 +35,10 @@ interface Props {
   globalRank: number | null;
   distinctGames: number;
   pendingReferrals: number;
+  topBrief: { title: string; category: string } | null;
 }
 
-export function DashboardUI({ profile, teamScores, recentGames, feed, season, globalRank, distinctGames, pendingReferrals }: Props) {
+export function DashboardUI({ profile, teamScores, recentGames, feed, season, globalRank, distinctGames, pendingReferrals, topBrief }: Props) {
   const { t } = useLanguage();
   const side = (profile?.side ?? "human") as Side;
   const meta = SIDE_META[side];
@@ -58,6 +59,16 @@ export function DashboardUI({ profile, teamScores, recentGames, feed, season, gl
         currentStreak={profile?.current_streak ?? 0}
         season={season}
       />
+
+      {topBrief && (
+        <Link href="/briefing"
+          className="flex items-center gap-3 px-4 py-3 rounded-lg bg-black/60 border border-side/25 hover:border-side transition-all">
+          <Newspaper size={16} className="text-side shrink-0" />
+          <span className="text-[10px] uppercase tracking-[0.25em] text-side/60 shrink-0">{t.briefing.today}</span>
+          <span className="text-sm text-fg/85 truncate flex-1">{topBrief.title}</span>
+          <ArrowRight size={14} className="text-side/60 shrink-0" />
+        </Link>
+      )}
 
       <DailyReward
         currentStreak={profile?.current_streak ?? 0}

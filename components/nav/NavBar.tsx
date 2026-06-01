@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTransition } from "react";
-import { LogOut, Trophy, Gamepad2, ListTodo, User, Home, Award, Users, GraduationCap } from "lucide-react";
+import { LogOut, Trophy, Gamepad2, ListTodo, User, Home, Award, Users, GraduationCap, Newspaper } from "lucide-react";
 import { logoutAction } from "@/app/(auth)/actions";
 import { type Side } from "@/lib/utils";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
@@ -28,6 +28,7 @@ export function NavBar({ username, side, score }: NavBarProps) {
     { href: "/dashboard",    label: t.nav.home,         icon: Home },
     { href: "/games",        label: t.nav.games,        icon: Gamepad2 },
     { href: "/learn",        label: t.learn.nav,        icon: GraduationCap },
+    { href: "/briefing",     label: t.briefing.nav,     icon: Newspaper },
     { href: "/quests",       label: t.nav.quests,       icon: ListTodo },
     { href: "/squads",       label: t.squads.nav,       icon: Users },
     { href: "/achievements", label: t.nav.badges,       icon: Award },

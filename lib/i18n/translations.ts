@@ -193,6 +193,14 @@ const t = {
       elite: "Elite", legend: "Legend",
       rank: "Rank", toNext: "to", maxRank: "Max rank reached",
     },
+    briefing: {
+      nav: "Briefing", path: "./briefing", title: "Daily AI Briefing",
+      subtitle: "Short, useful notes from the AI front line. Read today's to earn points.",
+      today: "Today", markRead: "Mark read · +50", readToday: "Read today",
+      readReward: "+50 added to your side",
+      cat: { tip: "tip", tool: "tool", risk: "risk", fact: "fact", news: "news" },
+      source: "source",
+    },
     learn: {
       nav: "Learn", path: "./learn", title: "AI Academy",
       subtitle: "Real skills for the AI age. Complete a lesson, answer the check, earn points for your side.",
@@ -455,6 +463,14 @@ const t = {
       elite: "Элита", legend: "Легенда",
       rank: "Ранг", toNext: "до", maxRank: "Достигнут максимальный ранг",
     },
+    briefing: {
+      nav: "Брифинг", path: "./брифинг", title: "Ежедневный ИИ-брифинг",
+      subtitle: "Короткие полезные заметки с передовой ИИ. Прочитай сегодняшнюю и получи очки.",
+      today: "Сегодня", markRead: "Отметить · +50", readToday: "Прочитано сегодня",
+      readReward: "+50 твоей стороне",
+      cat: { tip: "совет", tool: "инструмент", risk: "риск", fact: "факт", news: "новость" },
+      source: "источник",
+    },
     learn: {
       nav: "Обучение", path: "./обучение", title: "Академия ИИ",
       subtitle: "Реальные навыки эпохи ИИ. Пройди урок, ответь на проверку, получи очки для своей стороны.",
@@ -716,6 +732,14 @@ const t = {
       recruit: "Recluta", operative: "Operativo", veteran: "Veterano",
       elite: "Élite", legend: "Leyenda",
       rank: "Rango", toNext: "para", maxRank: "Rango máximo alcanzado",
+    },
+    briefing: {
+      nav: "Informe", path: "./informe", title: "Informe diario de IA",
+      subtitle: "Notas cortas y útiles desde el frente de la IA. Lee la de hoy para ganar puntos.",
+      today: "Hoy", markRead: "Marcar leído · +50", readToday: "Leído hoy",
+      readReward: "+50 a tu bando",
+      cat: { tip: "consejo", tool: "herramienta", risk: "riesgo", fact: "dato", news: "noticia" },
+      source: "fuente",
     },
     learn: {
       nav: "Aprende", path: "./aprende", title: "Academia IA",
