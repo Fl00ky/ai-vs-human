@@ -4,17 +4,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GameShell } from "@/components/games/GameShell";
 import { useSound } from "@/components/sound/SoundProvider";
+import { useLanguage } from "@/lib/i18n/context";
 
 const ROUNDS = 5;
 const MIN_DELAY = 1000;
 const MAX_DELAY = 4000;
 
 export default function ReactionGame() {
+  const { t } = useLanguage();
   return (
     <GameShell
       game="reaction"
-      title="Reaction"
-      description={`${ROUNDS} rounds. Wait for the signal, then click as fast as you can. Score = 1000 − ms.`}
+      title={t.games.reaction.title}
+      description={t.reaction.descTpl.replace("{rounds}", String(ROUNDS))}
       render={(onFinish) => <ReactionPlay onFinish={onFinish} />}
     />
   );
@@ -24,6 +26,7 @@ type Phase = "waiting" | "ready" | "clicked" | "early";
 
 function ReactionPlay({ onFinish }: { onFinish: (score: number, extras?: { detail?: number }) => void }) {
   const { play } = useSound();
+  const { t } = useLanguage();
   const [round, setRound] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
   const [phase, setPhase] = useState<Phase>("waiting");
@@ -94,7 +97,7 @@ function ReactionPlay({ onFinish }: { onFinish: (score: number, extras?: { detai
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between text-xs">
         <span className="text-side/70 uppercase tracking-widest">
-          Round {round + 1} / {ROUNDS}
+          {t.reaction.round} {round + 1} / {ROUNDS}
         </span>
         <span className="text-side font-display text-lg tabular-nums">
           {totalScore}
@@ -121,7 +124,7 @@ function ReactionPlay({ onFinish }: { onFinish: (score: number, extras?: { detai
                 . . .
               </div>
               <div className="text-xs text-fg/40 mt-2 uppercase tracking-widest">
-                wait for it
+                {t.reaction.waitForIt}
               </div>
             </motion.div>
           )}
@@ -140,7 +143,7 @@ function ReactionPlay({ onFinish }: { onFinish: (score: number, extras?: { detai
                   textShadow: "0 0 40px #00ff41",
                 }}
               >
-                NOW
+                {t.reaction.now}
               </div>
             </motion.div>
           )}
@@ -152,10 +155,10 @@ function ReactionPlay({ onFinish }: { onFinish: (score: number, extras?: { detai
               className="text-center"
             >
               <div className="font-display text-5xl text-side tabular-nums">
-                {ms}ms
+                {ms}{t.reaction.ms}
               </div>
               <div className="text-xs text-fg/50 mt-1">
-                +{Math.max(0, 1000 - (ms ?? 0))} pts
+                +{Math.max(0, 1000 - (ms ?? 0))} {t.reaction.pts}
               </div>
             </motion.div>
           )}
@@ -166,8 +169,8 @@ function ReactionPlay({ onFinish }: { onFinish: (score: number, extras?: { detai
               animate={{ opacity: 1 }}
               className="text-center"
             >
-              <div className="font-display text-4xl text-ai-red">TOO EARLY</div>
-              <div className="text-xs text-fg/50 mt-1">0 pts this round</div>
+              <div className="font-display text-4xl text-ai-red">{t.reaction.tooEarly}</div>
+              <div className="text-xs text-fg/50 mt-1">{t.reaction.zeroPts}</div>
             </motion.div>
           )}
         </AnimatePresence>

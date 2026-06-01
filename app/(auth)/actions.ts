@@ -53,21 +53,8 @@ export async function signupAction(formData: FormData): Promise<ActionResult> {
     return { ok: false, error: "Signup failed: no user returned" };
   }
 
-  // Create profile row
-  const { error: profileError } = await supabase.from("profiles").insert({
-    id: signupData.user.id,
-    username,
-    side,
-    total_score: 0,
-  });
-
-  if (profileError) {
-    // Username taken or other constraint
-    return { ok: false, error: profileError.message };
-  }
-
-  revalidatePath("/", "layout");
-  redirect("/dashboard");
+  // Profile is created automatically via trigger on auth.users insert.
+  return { ok: true };
 }
 
 export async function loginAction(formData: FormData): Promise<ActionResult> {
@@ -87,8 +74,7 @@ export async function loginAction(formData: FormData): Promise<ActionResult> {
     return { ok: false, error: error.message };
   }
 
-  revalidatePath("/", "layout");
-  redirect("/dashboard");
+  return { ok: true };
 }
 
 export async function logoutAction(): Promise<void> {

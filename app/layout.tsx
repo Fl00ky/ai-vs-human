@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Share_Tech_Mono, JetBrains_Mono } from "next/font/google";
 import { ToastProvider } from "@/components/Toast";
 import { SoundProvider } from "@/components/sound/SoundProvider";
+import { LanguageProvider, GlobalLanguageSwitcher } from "@/lib/i18n/context";
 import "./globals.css";
 
 const techMono = Share_Tech_Mono({
@@ -33,9 +34,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${techMono.variable} ${jetMono.variable}`}>
       <body className="crt-overlay">
-        <SoundProvider>
-          <ToastProvider>{children}</ToastProvider>
-        </SoundProvider>
+        <LanguageProvider>
+          <SoundProvider>
+            <ToastProvider>
+              {children}
+              <GlobalLanguageSwitcher />
+            </ToastProvider>
+          </SoundProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -4,17 +4,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { GameShell } from "@/components/games/GameShell";
 import { useSound } from "@/components/sound/SoundProvider";
+import { useLanguage } from "@/lib/i18n/context";
 
 const GRID = 9; // 3x3
 const SHOW_MS = 600;
 const GAP_MS = 200;
 
 export default function PatternGame() {
+  const { t } = useLanguage();
   return (
     <GameShell
       game="pattern"
-      title="Pattern Memory"
-      description="Watch the matrix glow. Repeat the sequence. Each round adds one more cell."
+      title={t.games.pattern.title}
+      description={t.patternGame.desc}
       render={(onFinish) => <PatternPlay onFinish={onFinish} />}
     />
   );
@@ -26,6 +28,7 @@ const MATRIX_CHARS = "アイウエオカキクケコ";
 
 function PatternPlay({ onFinish }: { onFinish: (score: number, extras?: { detail?: number }) => void }) {
   const { play } = useSound();
+  const { t } = useLanguage();
   const [sequence, setSequence] = useState<number[]>([]);
   const [showing, setShowing] = useState<number | null>(null);
   const [userSeq, setUserSeq] = useState<number[]>([]);
@@ -99,19 +102,19 @@ function PatternPlay({ onFinish }: { onFinish: (score: number, extras?: { detail
     <div className="flex flex-col gap-6 items-center">
       <div className="flex items-center justify-between w-full text-xs">
         <span className="text-side/70 uppercase tracking-widest">
-          Round {round} &middot; seq length {sequence.length}
+          {t.patternGame.round} {round} &middot; {t.patternGame.seqLength} {sequence.length}
         </span>
         <span className="text-side font-display text-lg tabular-nums">{score}</span>
       </div>
 
       <div className="text-xs uppercase tracking-[0.3em] text-fg/50 h-4">
-        {phase === "showing" && "watch..."}
-        {phase === "input" && "your turn"}
+        {phase === "showing" && t.patternGame.watch}
+        {phase === "input" && t.patternGame.yourTurn}
         {phase === "correct" && (
-          <span className="text-matrix-green">✓ correct</span>
+          <span className="text-matrix-green">{t.patternGame.correct}</span>
         )}
         {phase === "wrong" && (
-          <span className="text-ai-red">✗ wrong — game over</span>
+          <span className="text-ai-red">{t.patternGame.gameOver}</span>
         )}
       </div>
 

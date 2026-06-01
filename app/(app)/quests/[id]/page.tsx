@@ -6,11 +6,12 @@ import type { Quest } from "@/lib/types/database";
 export default async function QuestPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { session } } = await supabase.auth.getSession();
+  const userId = session!.user.id;
 
   const [{ data: quest }, { data: userQuest }] = await Promise.all([
     supabase.from("quests").select("*").eq("id", id).single(),
-    supabase.from("user_quests").select("quest_id").eq("user_id", user!.id).eq("quest_id", id).maybeSingle(),
+    supabase.from("user_quests").select("quest_id").eq("user_id", userId).eq("quest_id", id).maybeSingle(),
   ]);
 
   if (!quest) notFound();
@@ -19,7 +20,7 @@ export default async function QuestPage({ params }: { params: Promise<{ id: stri
     <QuestDetailClient
       quest={quest as Quest}
       completed={!!userQuest}
-      userId={user!.id}
+      userId={userId}
     />
   );
 }

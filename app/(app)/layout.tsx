@@ -13,22 +13,39 @@ export default async function AppLayout({
 }) {
   const supabase = await createClient();
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  if (!user) {
+  if (!session) {
     redirect("/login");
   }
 
-  const { data: profile } = await supabase
+  const user = session.user;
+
+  let { data: profile } = await supabase
     .from("profiles")
     .select("username, side, total_score")
     .eq("id", user.id)
     .single();
 
+  // Profile missing — create it from auth metadata (handles interrupted signup)
   if (!profile) {
-    // Auth user exists but no profile — likely interrupted signup
-    redirect("/login");
+    const meta = user.user_metadata as { username?: string; side?: string };
+    if (meta?.username && meta?.side) {
+      await supabase.from("profiles").insert({
+        id: user.id,
+        username: meta.username,
+        side: meta.side,
+        total_score: 0,
+      });
+      const { data: fresh } = await supabase
+        .from("profiles")
+        .select("username, side, total_score")
+        .eq("id", user.id)
+        .single();
+      profile = fresh;
+    }
+    if (!profile) redirect("/login");
   }
 
   const side = profile.side as Side;

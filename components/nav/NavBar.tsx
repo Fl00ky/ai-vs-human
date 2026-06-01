@@ -9,6 +9,7 @@ import { logoutAction } from "@/app/(auth)/actions";
 import { SIDE_META, type Side } from "@/lib/utils";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { SoundToggle } from "@/components/sound/SoundToggle";
+import { LanguageSwitcher, useLanguage } from "@/lib/i18n/context";
 
 interface NavBarProps {
   username: string;
@@ -20,14 +21,15 @@ export function NavBar({ username, side, score }: NavBarProps) {
   const pathname = usePathname();
   const [pending, startTransition] = useTransition();
   const meta = SIDE_META[side];
+  const { t } = useLanguage();
 
   const links = [
-    { href: "/dashboard", label: "Home", icon: Home },
-    { href: "/games", label: "Games", icon: Gamepad2 },
-    { href: "/quests", label: "Quests", icon: ListTodo },
-    { href: "/achievements", label: "Badges", icon: Award },
-    { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
-    { href: "/profile", label: "Profile", icon: User },
+    { href: "/dashboard",    label: t.nav.home,         icon: Home },
+    { href: "/games",        label: t.nav.games,        icon: Gamepad2 },
+    { href: "/quests",       label: t.nav.quests,       icon: ListTodo },
+    { href: "/achievements", label: t.nav.badges,       icon: Award },
+    { href: "/leaderboard",  label: t.nav.leaderboard,  icon: Trophy },
+    { href: "/profile",      label: t.nav.profile,      icon: User },
   ];
 
   return (
@@ -63,27 +65,24 @@ export function NavBar({ username, side, score }: NavBarProps) {
           })}
         </ul>
 
-        <div className="flex items-center gap-3">
-          <div className="hidden sm:flex flex-col items-end text-right">
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher />
+          <div className="hidden sm:flex flex-col items-end text-right ml-1">
             <span className="text-xs text-fg/50 leading-none">{meta.shortName}</span>
-            <span className="text-side font-mono text-sm leading-tight">
-              {username}
-            </span>
+            <span className="text-side font-mono text-sm leading-tight">{username}</span>
           </div>
           <div className="hidden sm:block text-side font-display text-lg tabular-nums">
             <AnimatedCounter value={score} />
           </div>
           <form
             action={() => {
-              startTransition(() => {
-                logoutAction();
-              });
+              startTransition(() => { logoutAction(); });
             }}
           >
             <button
               type="submit"
               disabled={pending}
-              aria-label="Sign out"
+              aria-label={t.nav.signOut}
               className="text-fg/40 hover:text-ai-red transition-colors p-1.5"
             >
               <LogOut size={16} />

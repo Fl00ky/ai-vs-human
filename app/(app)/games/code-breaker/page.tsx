@@ -3,17 +3,19 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GameShell } from "@/components/games/GameShell";
+import { useLanguage } from "@/lib/i18n/context";
 
 const CHARS = "アイウエオカキクケコ0123456789ABCDEF#$%&";
 const CODE_LEN = 4;
 const GAME_SECS = 30;
 
 export default function CodeBreakerGame() {
+  const { t } = useLanguage();
   return (
     <GameShell
       game="code_breaker"
-      title="Code Breaker"
-      description={`Find the hidden ${CODE_LEN}-char sequence in the falling code. Type it before time runs out.`}
+      title={t.games.codeBreaker.title}
+      description={t.codeBreakerGame.descTpl.replace("{len}", String(CODE_LEN))}
       render={(onFinish) => <CodeBreakerPlay onFinish={onFinish} />}
     />
   );
@@ -26,6 +28,7 @@ function randomCode() {
 }
 
 function CodeBreakerPlay({ onFinish }: { onFinish: (score: number, extras?: { firstTry?: boolean }) => void }) {
+  const { t } = useLanguage();
   const code = useMemo(() => randomCode(), []);
   const [input, setInput] = useState("");
   const [timeLeft, setTimeLeft] = useState(GAME_SECS);
@@ -74,10 +77,10 @@ function CodeBreakerPlay({ onFinish }: { onFinish: (score: number, extras?: { fi
       {/* Timer */}
       <div className="flex items-center justify-between text-xs">
         <span className="text-side/70 uppercase tracking-widest">
-          {Math.ceil(timeLeft)}s remaining
+          {Math.ceil(timeLeft)}s {t.codeBreakerGame.remaining}
         </span>
         <span className="text-side font-display text-lg tabular-nums">
-          {attempts} attempts
+          {attempts} {t.codeBreakerGame.attempts}
         </span>
       </div>
       <div className="h-1 bg-side/20 overflow-hidden">
@@ -111,7 +114,7 @@ function CodeBreakerPlay({ onFinish }: { onFinish: (score: number, extras?: { fi
               spellCheck={false}
             />
             <button type="submit" className="btn-matrix px-6">
-              Crack
+              {t.codeBreakerGame.crack}
             </button>
           </motion.form>
         )}
@@ -119,7 +122,7 @@ function CodeBreakerPlay({ onFinish }: { onFinish: (score: number, extras?: { fi
 
       {wrong && (
         <div className="text-center text-xs text-ai-red animate-pulse">
-          ! sequence mismatch — try again
+          {t.codeBreakerGame.mismatch}
         </div>
       )}
     </div>
