@@ -23,6 +23,12 @@ export default function HomePage() {
     }
   }, [beat]);
 
+  // Capture a referral code from ?ref= so it survives to signup.
+  useEffect(() => {
+    const ref = new URLSearchParams(window.location.search).get("ref");
+    if (ref) sessionStorage.setItem("ref_code", ref);
+  }, []);
+
   const skip = useCallback(() => setBeat("skipped"), []);
 
   useEffect(() => {

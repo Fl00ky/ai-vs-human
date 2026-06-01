@@ -8,6 +8,9 @@ import { ActivityFeed, type FeedEvent } from "@/components/ActivityFeed";
 import { MotionGrid, MotionGridItem } from "@/components/MotionGrid";
 import { DailyReward } from "@/components/dashboard/DailyReward";
 import { SeasonWar, type SeasonState } from "@/components/dashboard/SeasonWar";
+import { RecruitCard } from "@/components/dashboard/RecruitCard";
+import { ReferralRedeemer } from "@/components/dashboard/ReferralRedeemer";
+import { Nudges } from "@/components/dashboard/Nudges";
 import { useLanguage } from "@/lib/i18n/context";
 import { SIDE_META, formatScore, type Side } from "@/lib/utils";
 import type { TeamScore } from "@/lib/types/database";
@@ -20,6 +23,8 @@ interface Props {
     current_streak?: number;
     longest_streak?: number;
     last_checkin?: string | null;
+    referral_code?: string | null;
+    referred_by?: string | null;
   } | null;
   teamScores: TeamScore[];
   recentGames: { id: string; game: string; score: number }[];
@@ -40,6 +45,15 @@ export function DashboardUI({ profile, teamScores, recentGames, feed, season }: 
         <p className="text-fg/60 mt-2 italic">{meta.motto}</p>
       </section>
 
+      <ReferralRedeemer alreadyReferred={!!profile?.referred_by} />
+
+      <Nudges
+        side={side}
+        lastCheckin={profile?.last_checkin ?? null}
+        currentStreak={profile?.current_streak ?? 0}
+        season={season}
+      />
+
       <DailyReward
         currentStreak={profile?.current_streak ?? 0}
         longestStreak={profile?.longest_streak ?? 0}
@@ -47,6 +61,8 @@ export function DashboardUI({ profile, teamScores, recentGames, feed, season }: 
       />
 
       {season && <SeasonWar season={season} />}
+
+      <RecruitCard referralCode={profile?.referral_code ?? null} username={profile?.username ?? ""} />
 
       <section className="terminal-box p-6">
         <div className="flex items-center justify-between mb-4">
