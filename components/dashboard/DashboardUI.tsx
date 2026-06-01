@@ -6,12 +6,20 @@ import { GlitchText } from "@/components/matrix/Terminal";
 import { LiveTeamProgress } from "@/components/leaderboard/LiveTeamProgress";
 import { ActivityFeed, type FeedEvent } from "@/components/ActivityFeed";
 import { MotionGrid, MotionGridItem } from "@/components/MotionGrid";
+import { DailyReward } from "@/components/dashboard/DailyReward";
 import { useLanguage } from "@/lib/i18n/context";
 import { SIDE_META, formatScore, type Side } from "@/lib/utils";
 import type { TeamScore } from "@/lib/types/database";
 
 interface Props {
-  profile: { username: string; side: string; total_score: number } | null;
+  profile: {
+    username: string;
+    side: string;
+    total_score: number;
+    current_streak?: number;
+    longest_streak?: number;
+    last_checkin?: string | null;
+  } | null;
   teamScores: TeamScore[];
   recentGames: { id: string; game: string; score: number }[];
   feed: FeedEvent[];
@@ -29,6 +37,12 @@ export function DashboardUI({ profile, teamScores, recentGames, feed }: Props) {
         <GlitchText text={`${meta.greeting}, ${profile?.username ?? "agent"}`} as="h1" className="text-3xl sm:text-5xl" />
         <p className="text-fg/60 mt-2 italic">{meta.motto}</p>
       </section>
+
+      <DailyReward
+        currentStreak={profile?.current_streak ?? 0}
+        longestStreak={profile?.longest_streak ?? 0}
+        lastCheckin={profile?.last_checkin ?? null}
+      />
 
       <section className="terminal-box p-6">
         <div className="flex items-center justify-between mb-4">
