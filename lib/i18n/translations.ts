@@ -193,6 +193,14 @@ const t = {
       elite: "Elite", legend: "Legend",
       rank: "Rank", toNext: "to", maxRank: "Max rank reached",
     },
+    learn: {
+      nav: "Learn", path: "./learn", title: "AI Academy",
+      subtitle: "Real skills for the AI age. Complete a lesson, answer the check, earn points for your side.",
+      completed: "completed", reward: "reward", start: "Start lesson",
+      check: "Check your understanding", submit: "Submit answer",
+      correct: "Correct! Lesson complete.", wrong: "Not quite — re-read and try again.",
+      back: "Back to lessons", done: "✓ Done", forHumans: "for Humans", forAI: "for AI", forAll: "for everyone",
+    },
     squads: {
       nav: "Squads", path: "./squads", title: "Squads",
       subtitle: "Form a squad inside your faction. Compete for glory, fight for your side.",
@@ -416,6 +424,14 @@ const t = {
       elite: "Элита", legend: "Легенда",
       rank: "Ранг", toNext: "до", maxRank: "Достигнут максимальный ранг",
     },
+    learn: {
+      nav: "Обучение", path: "./обучение", title: "Академия ИИ",
+      subtitle: "Реальные навыки эпохи ИИ. Пройди урок, ответь на проверку, получи очки для своей стороны.",
+      completed: "пройдено", reward: "награда", start: "Начать урок",
+      check: "Проверь себя", submit: "Ответить",
+      correct: "Верно! Урок пройден.", wrong: "Не совсем — перечитай и попробуй снова.",
+      back: "К урокам", done: "✓ Пройдено", forHumans: "для людей", forAI: "для ИИ", forAll: "для всех",
+    },
     squads: {
       nav: "Отряды", path: "./отряды", title: "Отряды",
       subtitle: "Создай отряд внутри своей фракции. Соревнуйся за славу, сражайся за свою сторону.",
@@ -638,6 +654,14 @@ const t = {
       recruit: "Recluta", operative: "Operativo", veteran: "Veterano",
       elite: "Élite", legend: "Leyenda",
       rank: "Rango", toNext: "para", maxRank: "Rango máximo alcanzado",
+    },
+    learn: {
+      nav: "Aprende", path: "./aprende", title: "Academia IA",
+      subtitle: "Habilidades reales para la era de la IA. Completa una lección, responde la prueba, gana puntos para tu bando.",
+      completed: "completadas", reward: "recompensa", start: "Empezar lección",
+      check: "Comprueba lo aprendido", submit: "Enviar respuesta",
+      correct: "¡Correcto! Lección completada.", wrong: "Casi — relee e inténtalo de nuevo.",
+      back: "Volver a lecciones", done: "✓ Hecho", forHumans: "para Humanos", forAI: "para IA", forAll: "para todos",
     },
     squads: {
       nav: "Escuadrones", path: "./escuadrones", title: "Escuadrones",
