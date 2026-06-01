@@ -7,6 +7,7 @@ import { LiveTeamProgress } from "@/components/leaderboard/LiveTeamProgress";
 import { ActivityFeed, type FeedEvent } from "@/components/ActivityFeed";
 import { MotionGrid, MotionGridItem } from "@/components/MotionGrid";
 import { DailyReward } from "@/components/dashboard/DailyReward";
+import { SeasonWar, type SeasonState } from "@/components/dashboard/SeasonWar";
 import { useLanguage } from "@/lib/i18n/context";
 import { SIDE_META, formatScore, type Side } from "@/lib/utils";
 import type { TeamScore } from "@/lib/types/database";
@@ -23,9 +24,10 @@ interface Props {
   teamScores: TeamScore[];
   recentGames: { id: string; game: string; score: number }[];
   feed: FeedEvent[];
+  season: SeasonState | null;
 }
 
-export function DashboardUI({ profile, teamScores, recentGames, feed }: Props) {
+export function DashboardUI({ profile, teamScores, recentGames, feed, season }: Props) {
   const { t } = useLanguage();
   const side = (profile?.side ?? "human") as Side;
   const meta = SIDE_META[side];
@@ -43,6 +45,8 @@ export function DashboardUI({ profile, teamScores, recentGames, feed }: Props) {
         longestStreak={profile?.longest_streak ?? 0}
         lastCheckin={profile?.last_checkin ?? null}
       />
+
+      {season && <SeasonWar season={season} />}
 
       <section className="terminal-box p-6">
         <div className="flex items-center justify-between mb-4">
