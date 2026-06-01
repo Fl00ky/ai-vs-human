@@ -26,6 +26,7 @@ interface Props {
     last_checkin?: string | null;
     referral_code?: string | null;
     referred_by?: string | null;
+    referral_count?: number;
   } | null;
   teamScores: TeamScore[];
   recentGames: { id: string; game: string; score: number }[];
@@ -33,9 +34,10 @@ interface Props {
   season: SeasonState | null;
   globalRank: number | null;
   distinctGames: number;
+  pendingReferrals: number;
 }
 
-export function DashboardUI({ profile, teamScores, recentGames, feed, season, globalRank, distinctGames }: Props) {
+export function DashboardUI({ profile, teamScores, recentGames, feed, season, globalRank, distinctGames, pendingReferrals }: Props) {
   const { t } = useLanguage();
   const side = (profile?.side ?? "human") as Side;
   const meta = SIDE_META[side];
@@ -71,7 +73,12 @@ export function DashboardUI({ profile, teamScores, recentGames, feed, season, gl
         distinctGames={distinctGames}
       />
 
-      <RecruitCard referralCode={profile?.referral_code ?? null} username={profile?.username ?? ""} />
+      <RecruitCard
+        referralCode={profile?.referral_code ?? null}
+        username={profile?.username ?? ""}
+        referralCount={profile?.referral_count ?? 0}
+        pending={pendingReferrals}
+      />
 
       <section className="terminal-box p-6">
         <div className="flex items-center justify-between mb-4">

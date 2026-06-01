@@ -21,6 +21,11 @@ export default async function DashboardPage() {
   const { data: rankRow } = await supabase.from("leaderboard_view").select("rank").eq("id", user.id).maybeSingle();
   const { data: allMyGames } = await supabase.from("game_scores").select("game").eq("user_id", user.id);
   const distinctGames = new Set((allMyGames ?? []).map((g: { game: string }) => g.game)).size;
+  const { count: pendingReferrals } = await supabase
+    .from("profiles")
+    .select("id", { count: "exact", head: true })
+    .eq("referred_by", user.id)
+    .eq("referral_qualified", false);
 
   const [recentScores, recentQuestsRaw, recentAchsRaw] = await Promise.all([
     supabase.from("game_scores").select("id, user_id, game, score, played_at").order("played_at", { ascending: false }).limit(15),
@@ -70,6 +75,7 @@ export default async function DashboardPage() {
       season={season as SeasonState | null}
       globalRank={(rankRow as { rank: number } | null)?.rank ?? null}
       distinctGames={distinctGames}
+      pendingReferrals={pendingReferrals ?? 0}
     />
   );
 }

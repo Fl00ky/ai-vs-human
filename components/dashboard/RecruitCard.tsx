@@ -4,13 +4,18 @@ import { useState } from "react";
 import { Copy, Check, Share2, UserPlus } from "lucide-react";
 import { useLanguage } from "@/lib/i18n/context";
 import { useToast } from "@/components/Toast";
+import { RecruitTiers } from "@/components/dashboard/RecruitTiers";
 
 export function RecruitCard({
   referralCode,
   username,
+  referralCount,
+  pending,
 }: {
   referralCode: string | null;
   username: string;
+  referralCount: number;
+  pending: number;
 }) {
   const { t } = useLanguage();
   const { toast } = useToast();
@@ -76,6 +81,8 @@ export function RecruitCard({
           <Share2 size={14} /> {t.dashboard.share}
         </button>
       </div>
+
+      <RecruitTiers referralCount={referralCount} pending={pending} />
     </section>
   );
 }
