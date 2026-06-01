@@ -216,16 +216,16 @@ function Pill({ side, label, description, count, countLabel, onHover, onClick, d
         />
       </motion.div>
 
-      <div className="text-center px-4 py-3 rounded-xl bg-black/90 backdrop-blur-md border shadow-[0_0_30px_rgba(0,0,0,0.8)]" style={{ borderColor: `${color}55` }}>
+      <div className="flex flex-col items-center text-center px-5 py-3.5 rounded-xl bg-black/90 backdrop-blur-md border shadow-[0_0_30px_rgba(0,0,0,0.8)]" style={{ borderColor: `${color}55` }}>
         <div
-          className="font-display text-base sm:text-lg uppercase tracking-[0.35em] font-bold"
+          className="font-display text-lg sm:text-xl uppercase tracking-[0.35em] font-bold"
           style={{ color, textShadow: `0 0 12px ${color}, 0 0 24px ${color}90` }}
         >
           {label}
         </div>
         <div
-          className="text-sm sm:text-base mt-1.5 max-w-[190px] font-bold text-white"
-          style={{ textShadow: `0 1px 4px rgba(0,0,0,1), 0 0 10px ${color}70` }}
+          className="text-base sm:text-lg mt-2 max-w-[220px] font-extrabold text-white leading-snug tracking-wide"
+          style={{ textShadow: `0 1px 4px rgba(0,0,0,1), 0 0 12px ${color}90` }}
         >
           {description}
         </div>

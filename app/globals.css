@@ -355,12 +355,12 @@ body {
 
 /* Pill float animations — two phase offsets for natural breathing */
 @keyframes pill-float-a {
-  0%, 100% { transform: translateY(0px) rotate(0.4deg); }
-  50%       { transform: translateY(-14px) rotate(-0.4deg); }
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-14px); }
 }
 @keyframes pill-float-b {
-  0%, 100% { transform: translateY(-6px) rotate(-0.3deg); }
-  50%       { transform: translateY(8px) rotate(0.3deg); }
+  0%, 100% { transform: translateY(-6px); }
+  50%       { transform: translateY(8px); }
 }
 .pill-float-a { animation: pill-float-a 3.8s ease-in-out infinite; }
 .pill-float-b { animation: pill-float-b 4.4s ease-in-out infinite; }
