@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { GameShell } from "@/components/games/GameShell";
 import { useSound } from "@/components/sound/SoundProvider";
 import { useLanguage } from "@/lib/i18n/context";
@@ -32,6 +32,7 @@ function QuizPlay({ onFinish }: { onFinish: (score: number) => void }) {
   const [reveal, setReveal]   = useState<"correct" | "wrong" | null>(null);
   const [startedAt, setStartedAt] = useState(performance.now());
   const [timeLeft, setTimeLeft]   = useState(ROUND_MS);
+  const scoreRef = useRef(0);
 
   const current: QuizItem | undefined = items[round];
 
@@ -47,21 +48,22 @@ function QuizPlay({ onFinish }: { onFinish: (score: number) => void }) {
     }, 50);
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [round]);
+  }, [round, reveal]);
 
   const answer = (choice: "ai" | "human" | null) => {
-    if (!current) return;
+    if (!current || reveal) return;
     const elapsed = performance.now() - startedAt;
     const correct = choice === current.source;
     const points  = correct ? Math.round(50 + Math.max(0, 1 - elapsed / ROUND_MS) * (MAX_PER_ROUND - 50)) : 0;
-    if (correct) setScore(s => s + points);
+    if (correct) { scoreRef.current += points; setScore(scoreRef.current); }
     play(correct ? "correct" : "wrong");
     setReveal(correct ? "correct" : "wrong");
-    setTimeout(() => {
-      setReveal(null);
-      if (round + 1 >= ROUNDS) onFinish(score + points);
-      else setRound(r => r + 1);
-    }, 1100);
+  };
+
+  const advance = () => {
+    setReveal(null);
+    if (round + 1 >= ROUNDS) onFinish(scoreRef.current);
+    else setRound(r => r + 1);
   };
 
   if (!current) return null;
@@ -103,9 +105,23 @@ function QuizPlay({ onFinish }: { onFinish: (score: number) => void }) {
       </div>
 
       {reveal && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          className={`text-center font-display uppercase tracking-[0.3em] ${reveal === "correct" ? "text-matrix-green" : "text-ai-red"}`}>
-          {reveal === "correct" ? t.quiz.correct : t.quiz.wrong} &middot; {t.quiz.source} {current.source}
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
+          <div className={`text-center font-display uppercase tracking-[0.3em] ${reveal === "correct" ? "text-matrix-green" : "text-ai-red"}`}>
+            {reveal === "correct" ? t.quiz.correct : t.quiz.wrong} &middot; {t.quiz.source}{" "}
+            {current.source === "ai" ? t.common.ai : t.common.human}
+          </div>
+
+          {/* The educational payoff: explain the tell */}
+          <div className="bg-black/50 border border-side/30 p-4 text-sm leading-relaxed">
+            <span className="text-[10px] uppercase tracking-[0.25em] text-side/60 block mb-1">
+              {t.quiz.theTell}
+            </span>
+            <span className="text-fg/85">{current.tell}</span>
+          </div>
+
+          <button onClick={advance} className="btn-matrix w-full justify-center">
+            {round + 1 >= ROUNDS ? "✓" : t.quiz.next}
+          </button>
         </motion.div>
       )}
     </div>
