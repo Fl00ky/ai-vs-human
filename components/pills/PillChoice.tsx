@@ -216,7 +216,7 @@ function Pill({ side, label, description, count, countLabel, onHover, onClick, d
         />
       </motion.div>
 
-      <div className="text-center px-4 py-3 rounded-xl bg-black/55 backdrop-blur-sm border" style={{ borderColor: `${color}40` }}>
+      <div className="text-center px-4 py-3 rounded-xl bg-black/90 backdrop-blur-md border shadow-[0_0_30px_rgba(0,0,0,0.8)]" style={{ borderColor: `${color}55` }}>
         <div
           className="font-display text-base sm:text-lg uppercase tracking-[0.35em] font-bold"
           style={{ color, textShadow: `0 0 12px ${color}, 0 0 24px ${color}90` }}
@@ -224,13 +224,13 @@ function Pill({ side, label, description, count, countLabel, onHover, onClick, d
           {label}
         </div>
         <div
-          className="text-xs sm:text-sm mt-1.5 max-w-[180px] font-semibold text-white/95"
-          style={{ textShadow: "0 1px 6px rgba(0,0,0,0.95), 0 0 14px rgba(0,0,0,0.9)" }}
+          className="text-sm sm:text-base mt-1.5 max-w-[190px] font-bold text-white"
+          style={{ textShadow: `0 1px 4px rgba(0,0,0,1), 0 0 10px ${color}70` }}
         >
           {description}
         </div>
         <motion.div
-          className="mt-2.5 text-[11px] font-mono uppercase tracking-[0.22em] tabular-nums font-bold"
+          className="mt-2.5 font-mono text-[11px] uppercase tracking-[0.22em] tabular-nums font-bold"
           style={{ color, textShadow: `0 0 8px ${color}, 0 1px 4px rgba(0,0,0,0.9)` }}
           animate={{ opacity: [0.75, 1, 0.75] }}
           transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}

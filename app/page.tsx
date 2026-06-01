@@ -63,20 +63,22 @@ export default function HomePage() {
         animate={{ opacity: hover === "human" ? 1 : 0 }} transition={{ duration: 0.7 }}
       />
 
-      {/* Top-left boot / status */}
-      <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-10 text-xs sm:text-sm text-matrix-green/70 font-mono pointer-events-none max-w-[85vw]">
-        {beat === "boot" ? (
-          <BootSequence
-            lines={t.landing.boot}
-            speed={22} gap={160} startDelay={200}
-            finalCursor={false}
-            onDone={() => setBeat("title")}
-          />
-        ) : (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-            <div>aivshuman :: v2.0</div>
-            <div className="opacity-50">[ secure_channel_established ]</div>
-            <div className="opacity-35 text-[10px] mt-0.5">conflict_status=CRITICAL</div>
+      {/* Top-left boot log — stays on screen as a live terminal transcript */}
+      <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-10 text-xs sm:text-sm text-matrix-green/70 font-mono pointer-events-none max-w-[85vw] space-y-0.5">
+        <BootSequence
+          lines={t.landing.boot}
+          speed={22} gap={160} startDelay={200}
+          finalCursor
+          onDone={() => setBeat("title")}
+        />
+        {beat !== "boot" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="opacity-50"
+          >
+            [ secure_channel_established ]
           </motion.div>
         )}
       </div>
