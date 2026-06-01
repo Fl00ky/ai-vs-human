@@ -181,6 +181,20 @@ const t = {
       haveAccount: "Already an operative?", signIn: "Sign in", changeSide: "Change side",
       benefitGames: "Mini-games", benefitWarBoard: "Live war board", benefitBadges: "Rare badges",
     },
+    ranks: {
+      recruit: "Recruit", operative: "Operative", veteran: "Veteran",
+      elite: "Elite", legend: "Legend",
+      rank: "Rank", toNext: "to", maxRank: "Max rank reached",
+    },
+    milestones: {
+      title: "[ next objectives ]",
+      toRank: "to rank",
+      reachTop10: "Break into the top 10",
+      currentlyAt: "now",
+      playAllGames: "Play every mini-game",
+      done: "done",
+    },
+    jackpot: { label: "JACKPOT", reveal: "reward" },
     common: { points: "pts", ai: "AI", human: "Human", loading: "Loading..." },
   },
 
@@ -360,6 +374,20 @@ const t = {
       haveAccount: "Уже зачислен?", signIn: "Войти", changeSide: "Сменить сторону",
       benefitGames: "Мини-игры", benefitWarBoard: "Таблица войны", benefitBadges: "Редкие награды",
     },
+    ranks: {
+      recruit: "Рекрут", operative: "Оперативник", veteran: "Ветеран",
+      elite: "Элита", legend: "Легенда",
+      rank: "Ранг", toNext: "до", maxRank: "Достигнут максимальный ранг",
+    },
+    milestones: {
+      title: "[ ближайшие цели ]",
+      toRank: "до ранга",
+      reachTop10: "Ворвись в топ-10",
+      currentlyAt: "сейчас",
+      playAllGames: "Сыграй во все мини-игры",
+      done: "готово",
+    },
+    jackpot: { label: "ДЖЕКПОТ", reveal: "награда" },
     common: { points: "очк.", ai: "ИИ", human: "Люди", loading: "Загрузка..." },
   },
 
@@ -539,6 +567,20 @@ const t = {
       haveAccount: "¿Ya estás alistado?", signIn: "Iniciar sesión", changeSide: "Cambiar bando",
       benefitGames: "Mini-juegos", benefitWarBoard: "Tablero de guerra", benefitBadges: "Insignias raras",
     },
+    ranks: {
+      recruit: "Recluta", operative: "Operativo", veteran: "Veterano",
+      elite: "Élite", legend: "Leyenda",
+      rank: "Rango", toNext: "para", maxRank: "Rango máximo alcanzado",
+    },
+    milestones: {
+      title: "[ próximos objetivos ]",
+      toRank: "para rango",
+      reachTop10: "Entra en el top 10",
+      currentlyAt: "ahora",
+      playAllGames: "Juega todos los mini-juegos",
+      done: "hecho",
+    },
+    jackpot: { label: "JACKPOT", reveal: "recompensa" },
     common: { points: "pts", ai: "IA", human: "Humanos", loading: "Cargando..." },
   },
 };

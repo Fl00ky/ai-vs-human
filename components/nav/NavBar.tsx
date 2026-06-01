@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { LogOut, Trophy, Gamepad2, ListTodo, User, Home, Award } from "lucide-react";
 import { logoutAction } from "@/app/(auth)/actions";
-import { SIDE_META, type Side } from "@/lib/utils";
+import { type Side } from "@/lib/utils";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { SoundToggle } from "@/components/sound/SoundToggle";
 import { LanguageSwitcher, useLanguage } from "@/lib/i18n/context";
+import { getRank } from "@/lib/ranks";
 
 interface NavBarProps {
   username: string;
@@ -20,8 +21,8 @@ interface NavBarProps {
 export function NavBar({ username, side, score }: NavBarProps) {
   const pathname = usePathname();
   const [pending, startTransition] = useTransition();
-  const meta = SIDE_META[side];
   const { t } = useLanguage();
+  const rank = getRank(score);
 
   const links = [
     { href: "/dashboard",    label: t.nav.home,         icon: Home },
@@ -68,8 +69,17 @@ export function NavBar({ username, side, score }: NavBarProps) {
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
           <div className="hidden sm:flex flex-col items-end text-right ml-1">
-            <span className="text-xs text-fg/50 leading-none">{meta.shortName}</span>
+            <span className="text-[10px] uppercase tracking-wider text-side/70 leading-none">
+              {t.ranks[rank.key]}
+            </span>
             <span className="text-side font-mono text-sm leading-tight">{username}</span>
+            {/* Rank progress bar */}
+            <span className="block w-20 h-0.5 mt-0.5 rounded-full bg-fg/15 overflow-hidden">
+              <span
+                className="block h-full bg-side"
+                style={{ width: `${Math.round(rank.progress * 100)}%`, boxShadow: "0 0 6px var(--side-color)" }}
+              />
+            </span>
           </div>
           <div className="hidden sm:block text-side font-display text-lg tabular-nums">
             <AnimatedCounter value={score} />

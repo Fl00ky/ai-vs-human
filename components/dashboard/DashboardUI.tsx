@@ -11,6 +11,7 @@ import { SeasonWar, type SeasonState } from "@/components/dashboard/SeasonWar";
 import { RecruitCard } from "@/components/dashboard/RecruitCard";
 import { ReferralRedeemer } from "@/components/dashboard/ReferralRedeemer";
 import { Nudges } from "@/components/dashboard/Nudges";
+import { Milestones } from "@/components/dashboard/Milestones";
 import { useLanguage } from "@/lib/i18n/context";
 import { SIDE_META, formatScore, type Side } from "@/lib/utils";
 import type { TeamScore } from "@/lib/types/database";
@@ -30,9 +31,11 @@ interface Props {
   recentGames: { id: string; game: string; score: number }[];
   feed: FeedEvent[];
   season: SeasonState | null;
+  globalRank: number | null;
+  distinctGames: number;
 }
 
-export function DashboardUI({ profile, teamScores, recentGames, feed, season }: Props) {
+export function DashboardUI({ profile, teamScores, recentGames, feed, season, globalRank, distinctGames }: Props) {
   const { t } = useLanguage();
   const side = (profile?.side ?? "human") as Side;
   const meta = SIDE_META[side];
@@ -61,6 +64,12 @@ export function DashboardUI({ profile, teamScores, recentGames, feed, season }: 
       />
 
       {season && <SeasonWar season={season} />}
+
+      <Milestones
+        totalScore={profile?.total_score ?? 0}
+        globalRank={globalRank}
+        distinctGames={distinctGames}
+      />
 
       <RecruitCard referralCode={profile?.referral_code ?? null} username={profile?.username ?? ""} />
 

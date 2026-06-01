@@ -6,6 +6,7 @@ import { AchievementBadge } from "@/components/achievements/AchievementCard";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { MotionGrid, MotionGridItem } from "@/components/MotionGrid";
 import { useLanguage } from "@/lib/i18n/context";
+import { getRank } from "@/lib/ranks";
 import { SIDE_META, formatScore, type Side } from "@/lib/utils";
 import type { Achievement, GameKind } from "@/lib/types/database";
 
@@ -27,6 +28,7 @@ export function ProfileUI({ profile, userEmail, rank, scoresCount, questsCount, 
   const { t } = useLanguage();
   const side = (profile?.side ?? "human") as Side;
   const meta = SIDE_META[side];
+  const rankInfo = getRank(profile?.total_score ?? 0);
 
   return (
     <div className="space-y-8">
@@ -37,6 +39,33 @@ export function ProfileUI({ profile, userEmail, rank, scoresCount, questsCount, 
           <span className={`px-3 py-1 text-xs uppercase tracking-widest ${side === "ai" ? "side-badge-ai" : "side-badge-human"}`}>
             {meta.name}
           </span>
+        </div>
+      </section>
+
+      {/* Rank ladder */}
+      <section className="terminal-box p-5 sm:p-6">
+        <div className="flex items-end justify-between mb-3 flex-wrap gap-2">
+          <div>
+            <div className="text-[10px] uppercase tracking-[0.25em] text-fg/40">{t.ranks.rank}</div>
+            <div className="font-display text-2xl sm:text-3xl text-side uppercase tracking-wider"
+              style={{ textShadow: "0 0 14px var(--side-color)" }}>
+              {t.ranks[rankInfo.key]}
+            </div>
+          </div>
+          <div className="text-right text-xs text-fg/50">
+            {rankInfo.next ? (
+              <>
+                <span className="text-side tabular-nums font-bold">{rankInfo.toNext.toLocaleString()}</span>{" "}
+                {t.ranks.toNext} <span className="text-side">{t.ranks[rankInfo.next]}</span>
+              </>
+            ) : (
+              t.ranks.maxRank
+            )}
+          </div>
+        </div>
+        <div className="h-2 rounded-full overflow-hidden bg-black/60 border border-fg/10">
+          <div className="h-full rounded-full bg-side"
+            style={{ width: `${Math.round(rankInfo.progress * 100)}%`, boxShadow: "0 0 10px var(--side-color)" }} />
         </div>
       </section>
 

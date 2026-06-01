@@ -18,6 +18,9 @@ export default async function DashboardPage() {
   const { data: teamScores } = await supabase.from("team_score_view").select("*");
   const { data: season } = await supabase.rpc("get_season_state");
   const { data: recentGames } = await supabase.from("game_scores").select("*").eq("user_id", user.id).order("played_at", { ascending: false }).limit(5);
+  const { data: rankRow } = await supabase.from("leaderboard_view").select("rank").eq("id", user.id).maybeSingle();
+  const { data: allMyGames } = await supabase.from("game_scores").select("game").eq("user_id", user.id);
+  const distinctGames = new Set((allMyGames ?? []).map((g: { game: string }) => g.game)).size;
 
   const [recentScores, recentQuestsRaw, recentAchsRaw] = await Promise.all([
     supabase.from("game_scores").select("id, user_id, game, score, played_at").order("played_at", { ascending: false }).limit(15),
@@ -65,6 +68,8 @@ export default async function DashboardPage() {
       recentGames={recentGames ?? []}
       feed={feed}
       season={season as SeasonState | null}
+      globalRank={(rankRow as { rank: number } | null)?.rank ?? null}
+      distinctGames={distinctGames}
     />
   );
 }

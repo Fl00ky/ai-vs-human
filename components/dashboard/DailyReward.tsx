@@ -7,6 +7,7 @@ import { Flame } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/i18n/context";
 import { useToast } from "@/components/Toast";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 interface DailyRewardProps {
   currentStreak: number;
@@ -47,6 +48,8 @@ export function DailyReward({ currentStreak, longestStreak, lastCheckin }: Daily
     return Math.min(50 + (nextStreak - 1) * 25, 300);
   }, [claimed, streak, streakIsLive, currentStreak]);
 
+  const [reveal, setReveal] = useState<{ amount: number; jackpot: boolean } | null>(null);
+
   const claim = () => {
     if (claimed || pending) return;
     startTransition(async () => {
@@ -59,13 +62,22 @@ export function DailyReward({ currentStreak, longestStreak, lastCheckin }: Daily
       setClaimed(true);
       setStreak(data.streak);
       setLongest(data.longest);
+      setReveal({ amount: data.reward, jackpot: !!data.jackpot });
       confetti({
-        particleCount: 120,
-        spread: 75,
+        particleCount: data.jackpot ? 260 : 120,
+        spread: data.jackpot ? 110 : 75,
+        startVelocity: data.jackpot ? 55 : 45,
         origin: { y: 0.4 },
-        colors: ["#00ff41", "#ff003c", "#00d4ff"],
+        colors: data.jackpot
+          ? ["#ffd700", "#ff003c", "#ffaa00"]
+          : ["#00ff41", "#ff003c", "#00d4ff"],
       });
-      toast(`+${data.reward} ${t.dashboard.rewardAdded}`, "success");
+      toast(
+        data.jackpot
+          ? `★ ${t.jackpot.label}! +${data.reward} ${t.dashboard.rewardAdded}`
+          : `+${data.reward} ${t.dashboard.rewardAdded}`,
+        "success",
+      );
       router.refresh();
     });
   };
@@ -114,10 +126,38 @@ export function DailyReward({ currentStreak, longestStreak, lastCheckin }: Daily
                 animate={{ opacity: 1, scale: 1 }}
                 className="text-right"
               >
-                <div className="text-matrix-green text-sm font-bold">✓</div>
-                <div className="text-[11px] text-fg/60 uppercase tracking-widest">
-                  {t.dashboard.claimedToday}
-                </div>
+                {reveal ? (
+                  <motion.div
+                    initial={{ scale: 0.6, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: "spring", stiffness: 240, damping: 14 }}
+                  >
+                    {reveal.jackpot && (
+                      <div
+                        className="font-display text-xs uppercase tracking-[0.3em] mb-0.5"
+                        style={{ color: "#ffd700", textShadow: "0 0 12px #ffd700" }}
+                      >
+                        ★ {t.jackpot.label} ★
+                      </div>
+                    )}
+                    <div
+                      className="font-display text-3xl sm:text-4xl tabular-nums leading-none"
+                      style={{
+                        color: reveal.jackpot ? "#ffd700" : "var(--side-color)",
+                        textShadow: `0 0 16px ${reveal.jackpot ? "#ffd700" : "var(--side-color)"}`,
+                      }}
+                    >
+                      +<AnimatedCounter value={reveal.amount} duration={900} />
+                    </div>
+                  </motion.div>
+                ) : (
+                  <>
+                    <div className="text-matrix-green text-sm font-bold">✓</div>
+                    <div className="text-[11px] text-fg/60 uppercase tracking-widest">
+                      {t.dashboard.claimedToday}
+                    </div>
+                  </>
+                )}
               </motion.div>
             ) : (
               <motion.button
