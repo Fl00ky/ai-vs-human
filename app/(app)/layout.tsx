@@ -24,7 +24,7 @@ export default async function AppLayout({
 
   let { data: profile } = await supabase
     .from("profiles")
-    .select("username, side, total_score")
+    .select("username, side, total_score, is_admin")
     .eq("id", user.id)
     .single();
 
@@ -40,7 +40,7 @@ export default async function AppLayout({
       });
       const { data: fresh } = await supabase
         .from("profiles")
-        .select("username, side, total_score")
+        .select("username, side, total_score, is_admin")
         .eq("id", user.id)
         .single();
       profile = fresh;
@@ -55,7 +55,7 @@ export default async function AppLayout({
       <SideTheme side={side} />
       <MatrixRain side={side} intensity={0.4} />
       <div className="relative z-10 min-h-screen flex flex-col">
-        <NavBar username={profile.username} side={side} score={profile.total_score} />
+        <NavBar username={profile.username} side={side} score={profile.total_score} isAdmin={!!(profile as { is_admin?: boolean }).is_admin} />
         <div className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-10">
           <PageTransition>{children}</PageTransition>
         </div>

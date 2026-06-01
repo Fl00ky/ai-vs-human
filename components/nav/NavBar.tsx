@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTransition } from "react";
-import { LogOut, Trophy, Gamepad2, ListTodo, User, Home, Award, Users, GraduationCap, Newspaper } from "lucide-react";
+import { LogOut, Trophy, Gamepad2, ListTodo, User, Home, Award, Users, GraduationCap, Newspaper, Shield } from "lucide-react";
 import { logoutAction } from "@/app/(auth)/actions";
 import { type Side } from "@/lib/utils";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
@@ -16,9 +16,10 @@ interface NavBarProps {
   username: string;
   side: Side;
   score: number;
+  isAdmin?: boolean;
 }
 
-export function NavBar({ username, side, score }: NavBarProps) {
+export function NavBar({ username, side, score, isAdmin }: NavBarProps) {
   const pathname = usePathname();
   const [pending, startTransition] = useTransition();
   const { t } = useLanguage();
@@ -34,6 +35,7 @@ export function NavBar({ username, side, score }: NavBarProps) {
     { href: "/achievements", label: t.nav.badges,       icon: Award },
     { href: "/leaderboard",  label: t.nav.leaderboard,  icon: Trophy },
     { href: "/profile",      label: t.nav.profile,      icon: User },
+    ...(isAdmin ? [{ href: "/admin", label: "Admin", icon: Shield }] : []),
   ];
 
   return (

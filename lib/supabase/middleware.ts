@@ -9,6 +9,11 @@ const PROTECTED_PREFIXES = [
   "/games",
   "/leaderboard",
   "/achievements",
+  "/learn",
+  "/briefing",
+  "/squads",
+  "/replace-test",
+  "/admin",
 ];
 
 export async function updateSession(request: NextRequest) {
