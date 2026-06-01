@@ -2,9 +2,10 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
-import { GraduationCap, Check, ArrowLeft, ShieldCheck, Cpu, Users } from "lucide-react";
+import { GraduationCap, Check, ArrowLeft, ShieldCheck, Cpu, Users, Activity, ArrowRight } from "lucide-react";
 import { GlitchText } from "@/components/matrix/Terminal";
 import { MotionGrid, MotionGridItem } from "@/components/MotionGrid";
 import { useLanguage } from "@/lib/i18n/context";
@@ -43,6 +44,17 @@ export function LearnUI({ completed }: { completed: string[] }) {
           {done.length} / {LESSONS.length} {t.learn.completed}
         </div>
       </section>
+
+      {/* Featured: replaceability test */}
+      <Link href="/replace-test"
+        className="terminal-box card-shimmer p-5 flex items-center gap-4 hover:border-side transition-all hover:-translate-y-1">
+        <Activity size={32} className="text-side shrink-0" />
+        <div className="flex-1">
+          <div className="font-display text-lg text-side uppercase tracking-wider">{t.replaceTest.title}</div>
+          <p className="text-sm text-fg/60">{t.replaceTest.subtitle}</p>
+        </div>
+        <ArrowRight size={18} className="text-side/60 shrink-0" />
+      </Link>
 
       <MotionGrid className="grid sm:grid-cols-2 gap-4">
         {LESSONS.map((l) => {
