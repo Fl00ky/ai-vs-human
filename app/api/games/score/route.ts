@@ -40,6 +40,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
+  // Apply live "surge" event bonus (server-side authoritative, separate from
+  // the raw score so achievement thresholds stay honest).
+  await supabase.rpc("apply_surge_bonus", { p_base: score } as never);
+
   // Detect & award achievements after the score landed
   const unlockIds = await detectUnlocks(supabase, {
     userId: user.id,

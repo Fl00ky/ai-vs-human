@@ -12,6 +12,7 @@ import { RecruitCard } from "@/components/dashboard/RecruitCard";
 import { ReferralRedeemer } from "@/components/dashboard/ReferralRedeemer";
 import { Nudges } from "@/components/dashboard/Nudges";
 import { Milestones } from "@/components/dashboard/Milestones";
+import { WarEvent, type WarEventState } from "@/components/dashboard/WarEvent";
 import { useLanguage } from "@/lib/i18n/context";
 import { SIDE_META, formatScore, type Side } from "@/lib/utils";
 import type { TeamScore } from "@/lib/types/database";
@@ -36,9 +37,10 @@ interface Props {
   distinctGames: number;
   pendingReferrals: number;
   topBrief: { title: string; category: string } | null;
+  warEvent: WarEventState | null;
 }
 
-export function DashboardUI({ profile, teamScores, recentGames, feed, season, globalRank, distinctGames, pendingReferrals, topBrief }: Props) {
+export function DashboardUI({ profile, teamScores, recentGames, feed, season, globalRank, distinctGames, pendingReferrals, topBrief, warEvent }: Props) {
   const { t } = useLanguage();
   const side = (profile?.side ?? "human") as Side;
   const meta = SIDE_META[side];
@@ -52,6 +54,8 @@ export function DashboardUI({ profile, teamScores, recentGames, feed, season, gl
       </section>
 
       <ReferralRedeemer alreadyReferred={!!profile?.referred_by} />
+
+      {warEvent && <WarEvent event={warEvent} />}
 
       <Nudges
         side={side}

@@ -193,6 +193,10 @@ const t = {
       elite: "Elite", legend: "Legend",
       rank: "Rank", toNext: "to", maxRank: "Max rank reached",
     },
+    events: {
+      live: "[ live war event ]", surge: "points surge", multiplier: "× from games",
+      raidGoal: "raid goal", endsIn: "ends in", goalReached: "GOAL REACHED",
+    },
     store: {
       nav: "Store", path: "./store", title: "Black Market",
       subtitle: "Spend credits on cosmetics. Pure flair — no power, no pay-to-win.",
@@ -483,6 +487,10 @@ const t = {
       elite: "Элита", legend: "Легенда",
       rank: "Ранг", toNext: "до", maxRank: "Достигнут максимальный ранг",
     },
+    events: {
+      live: "[ живой ивент войны ]", surge: "всплеск очков", multiplier: "× за игры",
+      raidGoal: "цель рейда", endsIn: "до конца", goalReached: "ЦЕЛЬ ДОСТИГНУТА",
+    },
     store: {
       nav: "Магазин", path: "./магазин", title: "Чёрный рынок",
       subtitle: "Трать кредиты на косметику. Чистый стиль — без силы и pay-to-win.",
@@ -772,6 +780,10 @@ const t = {
       recruit: "Recluta", operative: "Operativo", veteran: "Veterano",
       elite: "Élite", legend: "Leyenda",
       rank: "Rango", toNext: "para", maxRank: "Rango máximo alcanzado",
+    },
+    events: {
+      live: "[ evento de guerra en vivo ]", surge: "oleada de puntos", multiplier: "× por juegos",
+      raidGoal: "objetivo del raid", endsIn: "termina en", goalReached: "OBJETIVO LOGRADO",
     },
     store: {
       nav: "Tienda", path: "./tienda", title: "Mercado Negro",

@@ -6,6 +6,7 @@ import { ActivityFeed, type FeedEvent } from "@/components/ActivityFeed";
 import { MotionGrid, MotionGridItem } from "@/components/MotionGrid";
 import { DashboardUI } from "@/components/dashboard/DashboardUI";
 import type { SeasonState } from "@/components/dashboard/SeasonWar";
+import type { WarEventState } from "@/components/dashboard/WarEvent";
 import { SIDE_META, formatScore, type Side } from "@/lib/utils";
 import type { TeamScore } from "@/lib/types/database";
 
@@ -17,6 +18,7 @@ export default async function DashboardPage() {
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single();
   const { data: teamScores } = await supabase.from("team_score_view").select("*");
   const { data: season } = await supabase.rpc("get_season_state");
+  const { data: warEvent } = await supabase.rpc("current_event");
   const { data: recentGames } = await supabase.from("game_scores").select("*").eq("user_id", user.id).order("played_at", { ascending: false }).limit(5);
   const { data: rankRow } = await supabase.from("leaderboard_view").select("rank").eq("id", user.id).maybeSingle();
   const { data: allMyGames } = await supabase.from("game_scores").select("game").eq("user_id", user.id);
@@ -83,6 +85,7 @@ export default async function DashboardPage() {
       distinctGames={distinctGames}
       pendingReferrals={pendingReferrals ?? 0}
       topBrief={(topBrief as { title: string; category: string } | null) ?? null}
+      warEvent={(warEvent as WarEventState | null) ?? null}
     />
   );
 }

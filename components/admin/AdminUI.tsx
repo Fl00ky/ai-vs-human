@@ -12,7 +12,7 @@ export interface AdminBrief { id: string; title: string; category: string; publi
 export interface AdminQuest { id: string; title: string; reward: number; side: string | null; active: boolean }
 interface AdminUser { id: string; username: string; side: string; total_score: number; season_score: number; is_admin: boolean }
 
-type Tab = "stats" | "submissions" | "briefs" | "quests" | "users";
+type Tab = "stats" | "submissions" | "events" | "briefs" | "quests" | "users";
 
 export function AdminUI({
   stats, briefs, quests,
@@ -26,6 +26,7 @@ export function AdminUI({
   const tabs: { id: Tab; label: string }[] = [
     { id: "stats", label: "Статистика" },
     { id: "submissions", label: "Заявки" },
+    { id: "events", label: "Ивенты" },
     { id: "briefs", label: "Брифинг" },
     { id: "quests", label: "Задания" },
     { id: "users", label: "Пользователи" },
@@ -53,9 +54,107 @@ export function AdminUI({
 
       {tab === "stats" && <Stats stats={stats} />}
       {tab === "submissions" && <Submissions />}
+      {tab === "events" && <Events />}
       {tab === "briefs" && <Briefs briefs={briefs} />}
       {tab === "quests" && <Quests quests={quests} />}
       {tab === "users" && <UsersPanel />}
+    </div>
+  );
+}
+
+interface Evt { id: string; type: string; title: string; multiplier: number; target: number | null; side: string | null; ends_at: string; finalized: boolean }
+
+function Events() {
+  const { toast } = useToast();
+  const [pending, start] = useTransition();
+  const [events, setEvents] = useState<Evt[]>([]);
+  const [type, setType] = useState<"surge" | "raid">("surge");
+  const [title, setTitle] = useState("");
+  const [multiplier, setMultiplier] = useState(2);
+  const [target, setTarget] = useState(10000);
+  const [side, setSide] = useState("");
+  const [hours, setHours] = useState(24);
+
+  const load = () => start(async () => {
+    const res = await fetch("/api/admin/events");
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) setEvents(data.events ?? []);
+  });
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, []);
+
+  const create = () => start(async () => {
+    const res = await fetch("/api/admin/events", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type, title, multiplier, target: type === "raid" ? target : null, side: side || null, hours }),
+    });
+    if (!res.ok) { toast("Ошибка", "error"); return; }
+    setTitle(""); toast("Ивент создан", "success"); load();
+  });
+
+  const finalize = (id: string) => start(async () => {
+    const res = await fetch("/api/admin/events", {
+      method: "PATCH", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) { toast(data.error ?? "Ошибка", "error"); return; }
+    toast(`Выплачено: ${data.paid}`, "success"); load();
+  });
+
+  const remove = (id: string) => start(async () => {
+    const res = await fetch(`/api/admin/events?id=${id}`, { method: "DELETE" });
+    if (!res.ok) { toast("Ошибка", "error"); return; }
+    load();
+  });
+
+  return (
+    <div className="space-y-6">
+      <div className="terminal-box p-5 space-y-2">
+        <div className="text-xs uppercase tracking-[0.2em] text-side/70 mb-2 flex items-center gap-2"><Plus size={14} /> Новый ивент</div>
+        <div className="flex gap-2 flex-wrap items-center">
+          <select value={type} onChange={(e) => setType(e.target.value as "surge" | "raid")} className="input-matrix max-w-[140px]">
+            <option value="surge">Сёрдж (×очки)</option>
+            <option value="raid">Рейд (цель)</option>
+          </select>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Название" className="input-matrix flex-1 min-w-[160px]" />
+        </div>
+        <div className="flex gap-2 flex-wrap items-center">
+          {type === "surge" ? (
+            <input type="number" step="0.5" value={multiplier} onChange={(e) => setMultiplier(Number(e.target.value))} placeholder="Множитель" className="input-matrix max-w-[120px]" />
+          ) : (
+            <>
+              <input type="number" value={target} onChange={(e) => setTarget(Number(e.target.value))} placeholder="Цель" className="input-matrix max-w-[120px]" />
+              <select value={side} onChange={(e) => setSide(e.target.value)} className="input-matrix max-w-[150px]">
+                <option value="">обе фракции</option>
+                <option value="ai">только ИИ</option>
+                <option value="human">только люди</option>
+              </select>
+            </>
+          )}
+          <input type="number" value={hours} onChange={(e) => setHours(Number(e.target.value))} placeholder="Часов" className="input-matrix max-w-[100px]" />
+          <button onClick={create} disabled={pending || title.length < 2} className="btn-matrix">Создать</button>
+        </div>
+      </div>
+
+      <div className="space-y-1.5">
+        {events.map((e) => (
+          <div key={e.id} className="flex items-center justify-between border-b border-side/10 pb-1.5 text-sm">
+            <span className="flex items-center gap-2">
+              <span className="text-[10px] uppercase text-side/60">{e.type}</span>
+              <span className="text-fg/80">{e.title}</span>
+              {e.type === "surge" && <span className="text-side/70">×{e.multiplier}</span>}
+              {e.type === "raid" && <span className="text-side/70 tabular-nums">→{e.target?.toLocaleString()}</span>}
+            </span>
+            <span className="flex items-center gap-2">
+              {e.type === "raid" && !e.finalized && (
+                <button onClick={() => finalize(e.id)} disabled={pending} className="text-xs px-2 py-0.5 border border-matrix-green/40 text-matrix-green">Выплатить</button>
+              )}
+              {e.finalized && <span className="text-[10px] text-fg/40">выплачено</span>}
+              <button onClick={() => remove(e.id)} disabled={pending} className="text-fg/30 hover:text-ai-red"><Trash2 size={14} /></button>
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
