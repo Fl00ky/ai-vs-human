@@ -193,6 +193,13 @@ const t = {
       elite: "Elite", legend: "Legend",
       rank: "Rank", toNext: "to", maxRank: "Max rank reached",
     },
+    store: {
+      nav: "Store", path: "./store", title: "Black Market",
+      subtitle: "Spend credits on cosmetics. Pure flair — no power, no pay-to-win.",
+      credits: "credits", titles: "Titles", effects: "Name effects",
+      buy: "Buy", owned: "Owned", equip: "Equip", equipped: "Equipped", unequip: "Unequip",
+      bought: "Purchased!", insufficient: "Not enough credits", noTitle: "No title",
+    },
     missions: {
       nav: "Promote", path: "./promote", title: "Spread the Signal",
       subtitle: "Promote the war on social media. Submit proof, an admin reviews it, you earn big.",
@@ -476,6 +483,13 @@ const t = {
       elite: "Элита", legend: "Легенда",
       rank: "Ранг", toNext: "до", maxRank: "Достигнут максимальный ранг",
     },
+    store: {
+      nav: "Магазин", path: "./магазин", title: "Чёрный рынок",
+      subtitle: "Трать кредиты на косметику. Чистый стиль — без силы и pay-to-win.",
+      credits: "кредитов", titles: "Титулы", effects: "Эффекты ника",
+      buy: "Купить", owned: "Куплено", equip: "Надеть", equipped: "Надето", unequip: "Снять",
+      bought: "Куплено!", insufficient: "Недостаточно кредитов", noTitle: "Без титула",
+    },
     missions: {
       nav: "Продвижение", path: "./продвижение", title: "Распространи сигнал",
       subtitle: "Продвигай войну в соцсетях. Сдай пруф, админ проверит — получишь крупную награду.",
@@ -758,6 +772,13 @@ const t = {
       recruit: "Recluta", operative: "Operativo", veteran: "Veterano",
       elite: "Élite", legend: "Leyenda",
       rank: "Rango", toNext: "para", maxRank: "Rango máximo alcanzado",
+    },
+    store: {
+      nav: "Tienda", path: "./tienda", title: "Mercado Negro",
+      subtitle: "Gasta créditos en cosméticos. Puro estilo — sin poder ni pay-to-win.",
+      credits: "créditos", titles: "Títulos", effects: "Efectos de nombre",
+      buy: "Comprar", owned: "Comprado", equip: "Equipar", equipped: "Equipado", unequip: "Quitar",
+      bought: "¡Comprado!", insufficient: "Créditos insuficientes", noTitle: "Sin título",
     },
     missions: {
       nav: "Promoción", path: "./promocion", title: "Difunde la señal",

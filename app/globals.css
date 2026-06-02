@@ -403,6 +403,20 @@ body {
 }
 .title-mega-glitch { animation: title-mega-glitch 5.5s steps(1, end) infinite; }
 
+/* Cosmetic: rainbow animated name */
+.name-rainbow {
+  background: linear-gradient(90deg, #ff003c, #ffaa00, #00ff41, #00d4ff, #ff00ff, #ff003c);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: name-rainbow 3s linear infinite;
+}
+@keyframes name-rainbow {
+  to { background-position: 200% center; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

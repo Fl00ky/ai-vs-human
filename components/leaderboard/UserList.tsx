@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import { formatScore, type Side } from "@/lib/utils";
+import { nameFxClass, nameFxStyle } from "@/lib/cosmetics";
 import type { LeaderboardEntry } from "@/lib/types/database";
 
 interface UserListProps {
@@ -86,9 +87,22 @@ export function UserList({ initial, currentUserId }: UserListProps) {
                 className="w-2 h-2 rounded-full flex-shrink-0"
                 style={{ background: sideColor }}
               />
-              <span className="flex-1 font-mono text-sm truncate" style={{ color: isMe ? "var(--side-color)" : "var(--fg)" }}>
-                {entry.username}
-                {isMe && <span className="ml-2 text-[10px] text-side/60">[you]</span>}
+              <span className="flex-1 font-mono text-sm truncate flex items-center gap-1.5 min-w-0">
+                <span
+                  className={`truncate ${nameFxClass(entry.equipped_fx)}`}
+                  style={entry.equipped_fx ? nameFxStyle(entry.equipped_fx) : { color: isMe ? "var(--side-color)" : "var(--fg)" }}
+                >
+                  {entry.username}
+                </span>
+                {entry.squad_tag && (
+                  <span className="text-[10px] text-fg/40 shrink-0">[{entry.squad_tag}]</span>
+                )}
+                {entry.equipped_title && (
+                  <span className="text-[9px] uppercase tracking-widest shrink-0" style={{ color: sideColor }}>
+                    {entry.equipped_title}
+                  </span>
+                )}
+                {isMe && <span className="text-[10px] text-side/60 shrink-0">[you]</span>}
               </span>
               <span className="font-display text-base tabular-nums" style={{ color: sideColor }}>
                 {formatScore(entry.total_score)}

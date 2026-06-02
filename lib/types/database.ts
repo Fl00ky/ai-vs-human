@@ -56,6 +56,9 @@ export interface LeaderboardEntry {
   side: Side;
   total_score: number;
   rank: number;
+  squad_tag?: string | null;
+  equipped_title?: string | null;
+  equipped_fx?: string | null;
 }
 
 export interface TeamScore {

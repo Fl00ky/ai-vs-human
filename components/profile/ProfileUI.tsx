@@ -17,7 +17,7 @@ const GAME_KEYS: Record<GameKind, "quiz" | "reaction" | "codeBreaker" | "pattern
 };
 
 interface Props {
-  profile: { username: string; side: string; total_score: number; created_at?: string } | null;
+  profile: { username: string; side: string; total_score: number; created_at?: string; equipped_title?: string | null } | null;
   userEmail: string;
   rank: number | null;
   scoresCount: number;
@@ -52,6 +52,12 @@ export function ProfileUI({ profile, userEmail, rank, scoresCount, questsCount, 
           <span className={`px-3 py-1 text-xs uppercase tracking-widest ${side === "ai" ? "side-badge-ai" : "side-badge-human"}`}>
             {meta.name}
           </span>
+          {profile?.equipped_title && (
+            <span className="px-3 py-1 text-xs uppercase tracking-widest border border-side/50 text-side"
+              style={{ boxShadow: "0 0 12px color-mix(in srgb, var(--side-color) 40%, transparent)" }}>
+              {profile.equipped_title}
+            </span>
+          )}
           <button onClick={shareProfile}
             className="ml-auto btn-matrix text-xs flex items-center gap-1.5 px-3 py-1.5">
             <Share2 size={13} /> {t.dashboard.share}
