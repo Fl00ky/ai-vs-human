@@ -2,9 +2,9 @@
 
 // Internal single-admin tool — labels are hardcoded (Russian), not i18n.
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Shield, Trash2, Plus, Search } from "lucide-react";
+import { Shield, Trash2, Plus, Search, Check, X, ExternalLink } from "lucide-react";
 import { GlitchText } from "@/components/matrix/Terminal";
 import { useToast } from "@/components/Toast";
 
@@ -12,7 +12,7 @@ export interface AdminBrief { id: string; title: string; category: string; publi
 export interface AdminQuest { id: string; title: string; reward: number; side: string | null; active: boolean }
 interface AdminUser { id: string; username: string; side: string; total_score: number; season_score: number; is_admin: boolean }
 
-type Tab = "stats" | "briefs" | "quests" | "users";
+type Tab = "stats" | "submissions" | "briefs" | "quests" | "users";
 
 export function AdminUI({
   stats, briefs, quests,
@@ -25,6 +25,7 @@ export function AdminUI({
 
   const tabs: { id: Tab; label: string }[] = [
     { id: "stats", label: "Статистика" },
+    { id: "submissions", label: "Заявки" },
     { id: "briefs", label: "Брифинг" },
     { id: "quests", label: "Задания" },
     { id: "users", label: "Пользователи" },
@@ -51,9 +52,68 @@ export function AdminUI({
       </div>
 
       {tab === "stats" && <Stats stats={stats} />}
+      {tab === "submissions" && <Submissions />}
       {tab === "briefs" && <Briefs briefs={briefs} />}
       {tab === "quests" && <Quests quests={quests} />}
       {tab === "users" && <UsersPanel />}
+    </div>
+  );
+}
+
+interface Sub { id: string; username: string; mission_id: string; url: string; note: string | null }
+
+function Submissions() {
+  const { toast } = useToast();
+  const [pending, start] = useTransition();
+  const [subs, setSubs] = useState<Sub[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  const load = () => start(async () => {
+    const res = await fetch("/api/admin/submissions");
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) setSubs(data.submissions ?? []);
+    setLoaded(true);
+  });
+
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, []);
+
+  const review = (id: string, approve: boolean) => start(async () => {
+    const res = await fetch("/api/admin/submissions", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, approve }),
+    });
+    if (!res.ok) { toast("Ошибка", "error"); return; }
+    toast(approve ? "Одобрено" : "Отклонено", "success");
+    setSubs((s) => s.filter((x) => x.id !== id));
+  });
+
+  if (loaded && subs.length === 0) {
+    return <div className="text-fg/40 text-sm">Заявок на проверке нет.</div>;
+  }
+
+  return (
+    <div className="space-y-2">
+      {subs.map((s) => (
+        <div key={s.id} className="terminal-box p-4 flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-side font-bold">{s.username}</span>
+              <span className="text-[10px] text-fg/50 uppercase tracking-widest">{s.mission_id}</span>
+            </div>
+            <a href={s.url} target="_blank" rel="noopener noreferrer"
+              className="text-xs text-human-blue hover:underline flex items-center gap-1 mt-1 break-all">
+              {s.url} <ExternalLink size={11} className="shrink-0" />
+            </a>
+            {s.note && <div className="text-xs text-fg/50 mt-1">{s.note}</div>}
+          </div>
+          <div className="flex gap-1.5 shrink-0">
+            <button onClick={() => review(s.id, true)} disabled={pending}
+              className="p-2 border border-matrix-green/50 text-matrix-green hover:bg-matrix-green/10"><Check size={14} /></button>
+            <button onClick={() => review(s.id, false)} disabled={pending}
+              className="p-2 border border-ai-red/50 text-ai-red hover:bg-ai-red/10"><X size={14} /></button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

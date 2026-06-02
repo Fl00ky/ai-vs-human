@@ -13,6 +13,7 @@ const PROTECTED_PREFIXES = [
   "/briefing",
   "/squads",
   "/replace-test",
+  "/promote",
   "/admin",
 ];
 

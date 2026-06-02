@@ -193,6 +193,19 @@ const t = {
       elite: "Elite", legend: "Legend",
       rank: "Rank", toNext: "to", maxRank: "Max rank reached",
     },
+    missions: {
+      nav: "Promote", path: "./promote", title: "Spread the Signal",
+      subtitle: "Promote the war on social media. Submit proof, an admin reviews it, you earn big.",
+      reward: "reward", submit: "Submit proof", urlPlaceholder: "Link to your post / video",
+      notePlaceholder: "Note for the reviewer (optional)", send: "Send for review",
+      pending: "On review", approved: "Approved", rejected: "Rejected — resubmit",
+      sent: "Sent for review!", yourSubmissions: "[ your submissions ]",
+      ambassador: "Ambassador", ambassadorHint: "Get 3 missions approved to become an Ambassador.",
+      errors: {
+        already_approved: "Already approved.", already_pending: "Already on review.",
+        bad_url: "Add a valid link.", invalid_mission: "Mission unavailable.",
+      },
+    },
     briefing: {
       nav: "Briefing", path: "./briefing", title: "Daily AI Briefing",
       subtitle: "Short, useful notes from the AI front line. Read today's to earn points.",
@@ -463,6 +476,19 @@ const t = {
       elite: "Элита", legend: "Легенда",
       rank: "Ранг", toNext: "до", maxRank: "Достигнут максимальный ранг",
     },
+    missions: {
+      nav: "Продвижение", path: "./продвижение", title: "Распространи сигнал",
+      subtitle: "Продвигай войну в соцсетях. Сдай пруф, админ проверит — получишь крупную награду.",
+      reward: "награда", submit: "Сдать пруф", urlPlaceholder: "Ссылка на пост / видео",
+      notePlaceholder: "Заметка для проверяющего (необязательно)", send: "Отправить на проверку",
+      pending: "На проверке", approved: "Одобрено", rejected: "Отклонено — отправь заново",
+      sent: "Отправлено на проверку!", yourSubmissions: "[ твои заявки ]",
+      ambassador: "Амбассадор", ambassadorHint: "Получи 3 одобренные миссии, чтобы стать Амбассадором.",
+      errors: {
+        already_approved: "Уже одобрено.", already_pending: "Уже на проверке.",
+        bad_url: "Добавь корректную ссылку.", invalid_mission: "Миссия недоступна.",
+      },
+    },
     briefing: {
       nav: "Брифинг", path: "./брифинг", title: "Ежедневный ИИ-брифинг",
       subtitle: "Короткие полезные заметки с передовой ИИ. Прочитай сегодняшнюю и получи очки.",
@@ -732,6 +758,19 @@ const t = {
       recruit: "Recluta", operative: "Operativo", veteran: "Veterano",
       elite: "Élite", legend: "Leyenda",
       rank: "Rango", toNext: "para", maxRank: "Rango máximo alcanzado",
+    },
+    missions: {
+      nav: "Promoción", path: "./promocion", title: "Difunde la señal",
+      subtitle: "Promociona la guerra en redes. Envía la prueba, un admin la revisa y ganas mucho.",
+      reward: "recompensa", submit: "Enviar prueba", urlPlaceholder: "Enlace a tu post / vídeo",
+      notePlaceholder: "Nota para el revisor (opcional)", send: "Enviar a revisión",
+      pending: "En revisión", approved: "Aprobado", rejected: "Rechazado — reenvía",
+      sent: "¡Enviado a revisión!", yourSubmissions: "[ tus envíos ]",
+      ambassador: "Embajador", ambassadorHint: "Consigue 3 misiones aprobadas para ser Embajador.",
+      errors: {
+        already_approved: "Ya aprobado.", already_pending: "Ya en revisión.",
+        bad_url: "Añade un enlace válido.", invalid_mission: "Misión no disponible.",
+      },
     },
     briefing: {
       nav: "Informe", path: "./informe", title: "Informe diario de IA",
