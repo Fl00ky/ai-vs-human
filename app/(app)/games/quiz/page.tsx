@@ -25,8 +25,8 @@ export default function QuizGame() {
 
 function QuizPlay({ onFinish }: { onFinish: (score: number) => void }) {
   const { play } = useSound();
-  const { t } = useLanguage();
-  const items = useMemo(() => pickRandomItems(ROUNDS), []);
+  const { t, lang } = useLanguage();
+  const items = useMemo(() => pickRandomItems(ROUNDS, lang), [lang]);
   const [round, setRound]     = useState(0);
   const [score, setScore]     = useState(0);
   const [reveal, setReveal]   = useState<"correct" | "wrong" | null>(null);

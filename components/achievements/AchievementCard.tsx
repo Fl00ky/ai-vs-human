@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import type { Achievement, Rarity } from "@/lib/types/database";
 import { formatScore } from "@/lib/utils";
+import { useLanguage } from "@/lib/i18n/context";
+import { localizeAchievement } from "@/lib/achievementsContent";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   zap: Zap,
@@ -46,8 +48,11 @@ export function AchievementCard({
   unlockedAt,
   compact = false,
 }: AchievementCardProps) {
+  const { t, lang } = useLanguage();
   const Icon = ICON_MAP[achievement.icon] ?? ZapOff;
   const rarity = RARITY_STYLE[achievement.rarity];
+  const loc = localizeAchievement(lang, achievement.id, achievement);
+  const rarityLabel = t.achievements.rarity[achievement.rarity];
 
   return (
     <motion.div
@@ -78,7 +83,7 @@ export function AchievementCard({
             className="font-display text-sm sm:text-base uppercase tracking-wider truncate"
             style={{ color: unlocked ? rarity.color : "rgba(255,255,255,0.5)" }}
           >
-            {achievement.title}
+            {loc.title}
           </span>
           <span
             className="text-[9px] uppercase tracking-widest px-1.5 py-0.5 border flex-shrink-0"
@@ -87,13 +92,13 @@ export function AchievementCard({
               borderColor: `${rarity.color}55`,
             }}
           >
-            {rarity.label}
+            {rarityLabel}
           </span>
         </div>
-        <p className="text-xs text-fg/60 mt-0.5">{achievement.description}</p>
+        <p className="text-xs text-fg/60 mt-0.5">{loc.description}</p>
         {unlocked && unlockedAt && (
           <div className="text-[10px] text-fg/40 mt-0.5">
-            unlocked {new Date(unlockedAt).toLocaleDateString()}
+            {new Date(unlockedAt).toLocaleDateString()}
           </div>
         )}
       </div>
@@ -109,8 +114,10 @@ export function AchievementCard({
 
 /** Compact pill version for profile / leaderboard */
 export function AchievementBadge({ achievement }: { achievement: Achievement }) {
+  const { lang } = useLanguage();
   const Icon = ICON_MAP[achievement.icon] ?? ZapOff;
   const rarity = RARITY_STYLE[achievement.rarity];
+  const loc = localizeAchievement(lang, achievement.id, achievement);
   return (
     <div
       className="flex items-center justify-center w-8 h-8 border"
@@ -120,7 +127,7 @@ export function AchievementBadge({ achievement }: { achievement: Achievement }) 
         background: `${rarity.color}15`,
         boxShadow: `0 0 8px ${rarity.glow}`,
       }}
-      title={`${achievement.title} — ${achievement.description}`}
+      title={`${loc.title} — ${loc.description}`}
     >
       <Icon size={14} />
     </div>

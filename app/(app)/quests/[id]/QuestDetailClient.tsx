@@ -8,6 +8,7 @@ import confetti from "canvas-confetti";
 import { formatScore } from "@/lib/utils";
 import { useToast } from "@/components/Toast";
 import { useLanguage } from "@/lib/i18n/context";
+import { localizeQuest } from "@/lib/questsContent";
 import type { Quest } from "@/lib/types/database";
 
 interface QuestDetailClientProps {
@@ -19,7 +20,8 @@ interface QuestDetailClientProps {
 export function QuestDetailClient({ quest, completed, userId }: QuestDetailClientProps) {
   const router = useRouter();
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const loc = localizeQuest(lang, quest);
   const [done, setDone] = useState(completed);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -57,7 +59,7 @@ export function QuestDetailClient({ quest, completed, userId }: QuestDetailClien
 
       <div className="terminal-box p-6 sm:p-8">
         <div className="flex items-start justify-between gap-4 mb-4">
-          <h1 className="font-display text-3xl sm:text-4xl text-side uppercase tracking-wider">{quest.title}</h1>
+          <h1 className="font-display text-3xl sm:text-4xl text-side uppercase tracking-wider">{loc.title}</h1>
           <span className="text-side font-display text-2xl tabular-nums flex-shrink-0">+{formatScore(quest.reward)}</span>
         </div>
 
@@ -67,7 +69,7 @@ export function QuestDetailClient({ quest, completed, userId }: QuestDetailClien
           </div>
         )}
 
-        <p className="text-fg/80 leading-relaxed mb-8">{quest.description}</p>
+        <p className="text-fg/80 leading-relaxed mb-8">{loc.description}</p>
 
         {done ? (
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}

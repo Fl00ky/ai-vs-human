@@ -10,10 +10,11 @@ import { GlitchText } from "@/components/matrix/Terminal";
 import { MotionGrid, MotionGridItem } from "@/components/MotionGrid";
 import { useLanguage } from "@/lib/i18n/context";
 import { useToast } from "@/components/Toast";
-import { LESSONS, type Lesson, type LessonSide } from "@/lib/lessons";
+import { getLessons, type Lesson, type LessonSide } from "@/lib/lessons";
 
 export function LearnUI({ completed }: { completed: string[] }) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const lessons = getLessons(lang);
   const [done, setDone] = useState<string[]>(completed);
   const [active, setActive] = useState<Lesson | null>(null);
 
@@ -41,7 +42,7 @@ export function LearnUI({ completed }: { completed: string[] }) {
         <GlitchText text={t.learn.title} as="h1" className="text-3xl sm:text-5xl" />
         <p className="text-fg/60 mt-2 max-w-xl">{t.learn.subtitle}</p>
         <div className="text-xs text-side/60 mt-2">
-          {done.length} / {LESSONS.length} {t.learn.completed}
+          {done.length} / {lessons.length} {t.learn.completed}
         </div>
       </section>
 
@@ -57,7 +58,7 @@ export function LearnUI({ completed }: { completed: string[] }) {
       </Link>
 
       <MotionGrid className="grid sm:grid-cols-2 gap-4">
-        {LESSONS.map((l) => {
+        {lessons.map((l) => {
           const isDone = done.includes(l.id);
           const Icon = SideIcon(l.side);
           const color = sideColor(l.side);
