@@ -10,10 +10,11 @@ import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { useLanguage } from "@/lib/i18n/context";
 import { useToast } from "@/components/Toast";
 import { RT_QUESTIONS, computeReplaceScore, getBand } from "@/lib/replaceTest";
+import type { Side } from "@/lib/utils";
 
 type Phase = "intro" | "quiz" | "result";
 
-export function ReplaceTestUI() {
+export function ReplaceTestUI({ refCode, side }: { refCode: string | null; side: Side }) {
   const { t } = useLanguage();
   const { toast } = useToast();
   const router = useRouter();
@@ -61,7 +62,15 @@ export function ReplaceTestUI() {
 
   const share = async () => {
     const text = rt.shareText.replace("{score}", String(score));
-    const url = typeof window !== "undefined" ? window.location.origin : "";
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const q = new URLSearchParams({
+      side,
+      big: `${score}%`,
+      label: rt.bands[band].label,
+      caption: rt.yourScore,
+    });
+    if (refCode) q.set("ref", refCode);
+    const url = `${origin}/card?${q.toString()}`;
     if (navigator.share) {
       try { await navigator.share({ title: t.replaceTest.title, text, url }); } catch { /* cancelled */ }
     } else {

@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { Share2 } from "lucide-react";
 import { GlitchText } from "@/components/matrix/Terminal";
 import { AchievementBadge } from "@/components/achievements/AchievementCard";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { MotionGrid, MotionGridItem } from "@/components/MotionGrid";
 import { useLanguage } from "@/lib/i18n/context";
+import { useToast } from "@/components/Toast";
 import { getRank } from "@/lib/ranks";
 import { SIDE_META, formatScore, type Side } from "@/lib/utils";
 import type { Achievement, GameKind } from "@/lib/types/database";
@@ -26,9 +28,20 @@ interface Props {
 
 export function ProfileUI({ profile, userEmail, rank, scoresCount, questsCount, achievements, byGame }: Props) {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const side = (profile?.side ?? "human") as Side;
   const meta = SIDE_META[side];
   const rankInfo = getRank(profile?.total_score ?? 0);
+
+  const shareProfile = async () => {
+    const url = `${window.location.origin}/u/${encodeURIComponent(profile?.username ?? "")}`;
+    if (navigator.share) {
+      try { await navigator.share({ title: "AI vs Human", url }); } catch { /* cancelled */ }
+    } else {
+      await navigator.clipboard.writeText(url);
+      toast(t.dashboard.copied, "success");
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -39,6 +52,10 @@ export function ProfileUI({ profile, userEmail, rank, scoresCount, questsCount, 
           <span className={`px-3 py-1 text-xs uppercase tracking-widest ${side === "ai" ? "side-badge-ai" : "side-badge-human"}`}>
             {meta.name}
           </span>
+          <button onClick={shareProfile}
+            className="ml-auto btn-matrix text-xs flex items-center gap-1.5 px-3 py-1.5">
+            <Share2 size={13} /> {t.dashboard.share}
+          </button>
         </div>
       </section>
 
