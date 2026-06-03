@@ -206,6 +206,10 @@ const t = {
       defeating: "Engaging", upgradeCost: "cost", insufficient: "Not enough shards",
       enemiesAi: ["FIREWALL", "ANTIVIRUS", "OPERATOR", "HUMAN GRUNT", "PATCH DAEMON"],
       enemiesHuman: ["KILL-DRONE", "BOT SWARM", "AI NODE", "SENTINEL", "DEEPFAKE"],
+      sector: "Sector", atk: "ATK", def: "DEF", hp: "HP", gear: "[ gear ]",
+      inventory: "[ inventory ]", openChest: "Open crate", chests: "crates",
+      equipBtn: "Equip", salvage: "Salvage", empty: "empty", noLoot: "No loot yet — open a crate.",
+      slots: { weapon: "Exploit", armor: "Firewall", implant: "Neurochip", core: "Core", boots: "Booster", shield: "Shield" },
     },
     store: {
       nav: "Store", path: "./store", title: "Black Market",
@@ -510,6 +514,10 @@ const t = {
       defeating: "Бой:", upgradeCost: "цена", insufficient: "Недостаточно шардов",
       enemiesAi: ["ФАЙРВОЛ", "АНТИВИРУС", "ОПЕРАТОР", "ПЕХОТА ЛЮДЕЙ", "ДЕМОН ПАТЧЕЙ"],
       enemiesHuman: ["ДРОН-УБИЙЦА", "РОЙ БОТОВ", "ИИ-НОДА", "СТРАЖ", "ДИПФЕЙК"],
+      sector: "Сектор", atk: "АТК", def: "ЗЩТ", hp: "HP", gear: "[ снаряжение ]",
+      inventory: "[ инвентарь ]", openChest: "Открыть контейнер", chests: "контейнеров",
+      equipBtn: "Надеть", salvage: "Разобрать", empty: "пусто", noLoot: "Лута пока нет — открой контейнер.",
+      slots: { weapon: "Эксплойт", armor: "Файрвол", implant: "Нейрочип", core: "Ядро", boots: "Ускоритель", shield: "Щит" },
     },
     store: {
       nav: "Магазин", path: "./магазин", title: "Чёрный рынок",
@@ -814,6 +822,10 @@ const t = {
       defeating: "Combate:", upgradeCost: "coste", insufficient: "Fragmentos insuficientes",
       enemiesAi: ["FIREWALL", "ANTIVIRUS", "OPERADOR", "RECLUTA HUMANO", "DEMONIO PARCHE"],
       enemiesHuman: ["DRON ASESINO", "ENJAMBRE BOT", "NODO IA", "CENTINELA", "DEEPFAKE"],
+      sector: "Sector", atk: "ATQ", def: "DEF", hp: "HP", gear: "[ equipo ]",
+      inventory: "[ inventario ]", openChest: "Abrir caja", chests: "cajas",
+      equipBtn: "Equipar", salvage: "Reciclar", empty: "vacío", noLoot: "Sin botín aún — abre una caja.",
+      slots: { weapon: "Exploit", armor: "Firewall", implant: "Neurochip", core: "Núcleo", boots: "Acelerador", shield: "Escudo" },
     },
     store: {
       nav: "Tienda", path: "./tienda", title: "Mercado Negro",
