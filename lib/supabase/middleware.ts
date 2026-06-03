@@ -15,6 +15,7 @@ const PROTECTED_PREFIXES = [
   "/replace-test",
   "/promote",
   "/store",
+  "/agent",
   "/admin",
 ];
 

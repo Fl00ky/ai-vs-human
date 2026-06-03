@@ -197,6 +197,16 @@ const t = {
       live: "[ live war event ]", surge: "points surge", multiplier: "× from games",
       raidGoal: "raid goal", endsIn: "ends in", goalReached: "GOAL REACHED",
     },
+    agent: {
+      nav: "Agent", path: "./agent", title: "Autonomous Agent",
+      subtitle: "Your agent farms the war while this tab is open. Loot fuels your faction.",
+      level: "Level", power: "Power", shards: "Shards", rate: "/sec",
+      warFed: "fed to your side", upgrade: "Upgrade", overclock: "Overclock",
+      overclockCd: "cooldown", keepOpen: "Keep this tab open — your agent only fights while it's live.",
+      defeating: "Engaging", upgradeCost: "cost", insufficient: "Not enough shards",
+      enemiesAi: ["FIREWALL", "ANTIVIRUS", "OPERATOR", "HUMAN GRUNT", "PATCH DAEMON"],
+      enemiesHuman: ["KILL-DRONE", "BOT SWARM", "AI NODE", "SENTINEL", "DEEPFAKE"],
+    },
     store: {
       nav: "Store", path: "./store", title: "Black Market",
       subtitle: "Spend credits on cosmetics. Pure flair — no power, no pay-to-win.",
@@ -491,6 +501,16 @@ const t = {
       live: "[ живой ивент войны ]", surge: "всплеск очков", multiplier: "× за игры",
       raidGoal: "цель рейда", endsIn: "до конца", goalReached: "ЦЕЛЬ ДОСТИГНУТА",
     },
+    agent: {
+      nav: "Агент", path: "./агент", title: "Автономный агент",
+      subtitle: "Твой агент фармит войну, пока эта вкладка открыта. Лут питает твою фракцию.",
+      level: "Уровень", power: "Мощь", shards: "Шарды", rate: "/сек",
+      warFed: "отдано твоей стороне", upgrade: "Апгрейд", overclock: "Оверклок",
+      overclockCd: "кулдаун", keepOpen: "Держи вкладку открытой — агент сражается только пока она активна.",
+      defeating: "Бой:", upgradeCost: "цена", insufficient: "Недостаточно шардов",
+      enemiesAi: ["ФАЙРВОЛ", "АНТИВИРУС", "ОПЕРАТОР", "ПЕХОТА ЛЮДЕЙ", "ДЕМОН ПАТЧЕЙ"],
+      enemiesHuman: ["ДРОН-УБИЙЦА", "РОЙ БОТОВ", "ИИ-НОДА", "СТРАЖ", "ДИПФЕЙК"],
+    },
     store: {
       nav: "Магазин", path: "./магазин", title: "Чёрный рынок",
       subtitle: "Трать кредиты на косметику. Чистый стиль — без силы и pay-to-win.",
@@ -784,6 +804,16 @@ const t = {
     events: {
       live: "[ evento de guerra en vivo ]", surge: "oleada de puntos", multiplier: "× por juegos",
       raidGoal: "objetivo del raid", endsIn: "termina en", goalReached: "OBJETIVO LOGRADO",
+    },
+    agent: {
+      nav: "Agente", path: "./agente", title: "Agente Autónomo",
+      subtitle: "Tu agente farmea la guerra mientras esta pestaña está abierta. El botín alimenta tu bando.",
+      level: "Nivel", power: "Poder", shards: "Fragmentos", rate: "/seg",
+      warFed: "aportado a tu bando", upgrade: "Mejorar", overclock: "Overclock",
+      overclockCd: "enfriamiento", keepOpen: "Mantén esta pestaña abierta — tu agente solo lucha mientras está activa.",
+      defeating: "Combate:", upgradeCost: "coste", insufficient: "Fragmentos insuficientes",
+      enemiesAi: ["FIREWALL", "ANTIVIRUS", "OPERADOR", "RECLUTA HUMANO", "DEMONIO PARCHE"],
+      enemiesHuman: ["DRON ASESINO", "ENJAMBRE BOT", "NODO IA", "CENTINELA", "DEEPFAKE"],
     },
     store: {
       nav: "Tienda", path: "./tienda", title: "Mercado Negro",
