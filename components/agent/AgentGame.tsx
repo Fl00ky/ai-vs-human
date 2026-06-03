@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Zap, Cpu, ChevronUp, Swords, Sword, Shield, Heart, Box, Package, Trash2 } from "lucide-react";
+import { Zap, ChevronUp, Sword, Shield, Heart, Box, Package, Trash2 } from "lucide-react";
 import { GlitchText } from "@/components/matrix/Terminal";
+import { AgentArena } from "@/components/agent/AgentArena";
 import { useLanguage } from "@/lib/i18n/context";
 import { useToast } from "@/components/Toast";
 import type { Side } from "@/lib/utils";
@@ -31,14 +31,12 @@ export function AgentGame({ side }: { side: Side }) {
   const { toast } = useToast();
   const [a, setA] = useState<AgentState | null>(null);
   const [shownShards, setShownShards] = useState(0);
-  const [enemy, setEnemy] = useState(0);
-  const [hp, setHp] = useState(100);
   const [ocReady, setOcReady] = useState(0);
   const [busy, setBusy] = useState(false);
 
   const enemies = side === "ai" ? t.agent.enemiesAi : t.agent.enemiesHuman;
-  const color = side === "ai" ? "var(--ai-red)" : "var(--human-blue)";
-  const enemyColor = side === "ai" ? "var(--human-blue)" : "var(--ai-red)";
+  const color = side === "ai" ? "#ff003c" : "#00d4ff";
+  const enemyColor = side === "ai" ? "#00d4ff" : "#ff003c";
 
   const call = useCallback(async (body: object) => {
     const res = await fetch("/api/agent", {
@@ -60,11 +58,6 @@ export function AgentGame({ side }: { side: Side }) {
     const id = setInterval(() => {
       setShownShards((s) => s + a.rate);
       setOcReady((r) => Math.max(0, r - 1));
-      setHp((h) => {
-        const next = h - Math.max(5, 100 / (5 + a.level * 0.15));
-        if (next <= 0) { setEnemy((e) => e + 1); return 100; }
-        return next;
-      });
     }, 1000);
     return () => clearInterval(id);
   }, [a]);
@@ -78,7 +71,6 @@ export function AgentGame({ side }: { side: Side }) {
   if (!a) return <div className="text-fg/50 text-sm">{t.common.loading}</div>;
 
   const upgradeCost = 50 * (a.power + 1) * (a.power + 1);
-  const enemyName = enemies[enemy % enemies.length];
   const xpPct = Math.min(100, Math.round((a.xp / a.xp_needed) * 100));
 
   return (
@@ -95,32 +87,16 @@ export function AgentGame({ side }: { side: Side }) {
         </div>
       </section>
 
-      {/* Combat arena */}
-      <section className="terminal-box p-5 relative overflow-hidden" style={{ borderColor: color }}>
-        <div className="flex items-center justify-between gap-4">
-          <div className="text-center">
-            <motion.div animate={{ y: [0, -4, 0] }} transition={{ duration: 1.2, repeat: Infinity }}>
-              <Cpu size={52} style={{ color, filter: `drop-shadow(0 0 12px ${color})` }} />
-            </motion.div>
-            <div className="text-xs mt-1 text-side font-display">LV {a.level}</div>
-          </div>
-          <div className="flex-1 flex flex-col items-center gap-1">
-            <Swords size={18} className="text-fg/30" />
-            <motion.div className="h-0.5 w-full rounded" style={{ background: color }}
-              animate={{ opacity: [0.3, 1, 0.3], scaleX: [0.5, 1, 0.5] }} transition={{ duration: 0.6, repeat: Infinity }} />
-            <span className="text-[10px] text-fg/40 uppercase tracking-widest">{t.agent.defeating} {enemyName}</span>
-          </div>
-          <div className="text-center w-24">
-            <AnimatePresence mode="wait">
-              <motion.div key={enemy} initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.5, opacity: 0 }}
-                className="font-display text-3xl" style={{ color: enemyColor }}>▣</motion.div>
-            </AnimatePresence>
-            <div className="h-1.5 mt-2 rounded-full overflow-hidden bg-black/60 border border-fg/10">
-              <div className="h-full rounded-full" style={{ width: `${hp}%`, background: enemyColor }} />
-            </div>
-            <div className="text-[9px] mt-1 text-fg/40 tabular-nums">#{enemy + 1}</div>
-          </div>
-        </div>
+      {/* Combat arena (canvas) */}
+      <section className="terminal-box p-1.5 overflow-hidden" style={{ borderColor: color }}>
+        <AgentArena
+          sideColor={color}
+          enemyColor={enemyColor}
+          level={a.level}
+          atk={a.atk}
+          rate={a.rate}
+          enemyNames={enemies}
+        />
       </section>
 
       {/* Stat bar (ATK / DEF / HP) + level progress */}
